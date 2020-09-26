@@ -37,7 +37,7 @@ folders.forEach(folder => {
         };
 
         const docHandler = docMethod.value.items.filter(item => item.key.value == 'x-handler' );
-        const handler = 'handler';
+        let handler = 'handler';
         if( docHandler.length == 1 )
           handler = docHandler[0].value.value;
 
