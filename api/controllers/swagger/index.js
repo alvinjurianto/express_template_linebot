@@ -15,7 +15,7 @@ exports.handler = async (event, context, callback) => {
   const root = swagger_utils.parse_document(root_file);
 
   root.contents.set("host", event.headers.host);
-  root.contents.set("basePath", event.stage ? event.stage : '/');
+  root.contents.set("basePath", event.stage);
   
   swagger_utils.delete_paths(root);
   swagger_utils.delete_definitions(root);
