@@ -1,7 +1,6 @@
 'use strict';
 
 const HELPER_BASE = process.env.HELPER_BASE || './api/helpers/';
-const BASE_PATH = process.env.BASE_PATH || '/';
 
 const SWAGGER_FILE = "api/swagger/swagger.yaml";
 const TARGET_FNAME = "swagger.yaml";
@@ -11,8 +10,6 @@ const swagger_utils = require(HELPER_BASE + 'swagger_utils');
 
 const root_file = fs.readFileSync(SWAGGER_FILE, 'utf-8');
 const root = swagger_utils.parse_document(root_file);
-
-root.contents.set("basePath", BASE_PATH);
 
 var num = 0;
 
