@@ -33,6 +33,8 @@ securityDefinitions:
 #    x-google-jwks_uri: "https://cognito-idp.ap-northeast-1.amazonaws.com/【CognitoのプールID】/.well-known/jwks.json"
 #    x-google-audiences: "【CognitoのアプリクライアントID】"
 
+paths: {}
+
 definitions:
   Empty:
     type: "object"
