@@ -11,7 +11,6 @@ const CONTROLLERS_BASE = './api/controllers/';
 const TARGET_FNAME = "swagger.yaml";
 
 exports.handler = async (event, context, callback) => { 
-  console.log(event);
   const root_file = fs.readFileSync(SWAGGER_FILE, 'utf-8');
   const root = swagger_utils.parse_document(root_file);
 
