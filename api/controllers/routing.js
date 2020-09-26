@@ -233,7 +233,7 @@ function routing(req, res) {
               path: req.path,
               httpMethod: req.method,
               queryStringParameters: req.query,
-              stage: req.baseUrl,
+              stage: req.baseUrl ? req.baseUrl : '/',
               Host: req.hostname,
               requestContext: ( req.requestContext ) ? req.requestContext : {},
               files: req.files,
