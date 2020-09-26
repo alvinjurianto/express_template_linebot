@@ -16,8 +16,3 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/CommonResponse"
-    head:
-      x-functype: empty
-      responses:
-        200:
-          description: Success      
