@@ -5,7 +5,7 @@ const Response = require('./response');
 const StructJson = require('./structjson');
 
 class LineUtils{
-    constructor(config){
+    constructor(line, config){
         this.client = new line.Client(config);
         this.map = new Map();
     }
