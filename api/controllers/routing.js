@@ -157,7 +157,7 @@ function preprocess(options){
           break;
         }
         case 'basicAuth': {
-          const basic = req.headers.authorization.trim();
+          let basic = req.headers.authorization.trim();
           if(basic.toLowerCase().startsWith('basic '))
             basic = basic.slice(6).trim();
   
@@ -342,7 +342,7 @@ function return_response(res, ret){
         res.type('application/json');
 
     if( ret.isBase64Encoded ){
-        let bin = Buffer.from(ret.body, 'base64')
+        const bin = Buffer.from(ret.body, 'base64')
         res.send(bin);
     }else{
         if( res.func_type == 'alexa'){
