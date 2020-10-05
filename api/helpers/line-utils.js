@@ -1,12 +1,14 @@
 'use strict';
 
-const line = require('@line/bot-sdk');
 const Response = require('./response');
 const StructJson = require('./structjson');
+
+const crypto = require('crypto');
 
 class LineUtils{
     constructor(line, config){
         this.client = new line.Client(config);
+        this.secret = config.channelSecret;
         this.map = new Map();
     }
 
@@ -57,6 +59,11 @@ class LineUtils{
     lambda(){
         return async (event, context, callback) => {
             console.log(context.req);
+
+            const signature = crypto.createHmac('SHA256', this.secret).update(event.body).digest('base64');
+            if( signature != event.headers['x-line-signature'] )
+                return new Response().set_error('invalid signature');
+
             var body = JSON.parse(event.body);
 
             return Promise.all(body.events.map((event) =>{
