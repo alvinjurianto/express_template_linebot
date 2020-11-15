@@ -194,7 +194,7 @@ function preprocess(options){
         break;
       }
       case 'apikeyAuth': {
-        let apikey = req.headers["X-API-KEY".toLowerCase()];
+        let apikey = req.headers["x-api-key"];
         if( apikey ){
           req.requestContext = {
             apikeyAuth : {
