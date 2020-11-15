@@ -145,33 +145,37 @@ function preprocess(options){
     }
     res.func_type = options.func_type;
 
-    if( options.security && req.headers.authorization ){
-      switch( options.security ){
-        case 'tokenAuth':{
+    switch( options.security ){
+      case 'tokenAuth':{
+        if( req.headers.authorization ){
           const decoded = jwt_decode(req.headers.authorization);
           req.requestContext = {
             authorizer : {
               claims : decoded
             }
           };
-          break;
         }
-        case 'basicAuth': {
+        break;
+      }
+      case 'basicAuth': {
+        if( req.headers.authorization ){
           let basic = req.headers.authorization.trim();
           if(basic.toLowerCase().startsWith('basic '))
             basic = basic.slice(6).trim();
   
-            const buf = Buffer.from(basic, 'base64');
-            const ascii = buf.toString('ascii');
+          const buf = Buffer.from(basic, 'base64');
+          const ascii = buf.toString('ascii');
   
           req.requestContext = {
             basicAuth : {
               basic : ascii.split(':')
             }
           };
-          break;
         }
-        case 'jwtAuth': {
+        break;
+      }
+      case 'jwtAuth': {
+        if( req.headers.authorization ){
           const decoded = jwt_decode(req.headers.authorization);
           req.requestContext = {
             jwtAuth : {
@@ -186,19 +190,22 @@ function preprocess(options){
           };
           const buffer = Buffer.from(JSON.stringify(claims));
           req.headers['x-endpoint-api-userinfo'] = buffer.toString('base64');
-          break;
         }
-        case 'apikeyAuth': {
+        break;
+      }
+      case 'apikeyAuth': {
+        let apikey = req.headers["X-API-KEY".toLowerCase()];
+        if( apikey ){
           req.requestContext = {
             apikeyAuth : {
-              apikey : req.headers.authorization
+              apikey : apikey
             }
           };
-          break;
         }
+        break;
       }
     }
-
+    
     if( options.content_type == 'multipart/form-data'){
       let upload;
       if( options.files && options.files.length > 0 ){
