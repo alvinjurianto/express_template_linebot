@@ -203,7 +203,7 @@ class LineUtils{
                 type: "postback",
                 label: title,
                 data: action.data,
-                displayText: (action.text) ? action.text : title
+                displayText: action.text || title
             };
         }else if( action.type == 'uri' ){
             return {
@@ -216,7 +216,7 @@ class LineUtils{
             return {
                 type: "message",
                 label: title,
-                text: (action.text) ? action.text : title
+                text: action.text || title
             };
         }
     }
