@@ -203,7 +203,7 @@ class LineUtils{
                 type: "postback",
                 label: title,
                 data: action.data,
-                displayText: title
+                displayText: (action.text) ? action.text : title
             };
         }else if( action.type == 'uri' ){
             return {
