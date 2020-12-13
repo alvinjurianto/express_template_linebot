@@ -216,7 +216,7 @@ class LineUtils{
             return {
                 type: "message",
                 label: title,
-                text: title
+                text: (action.text) ? action.text : title
             };
         }
     }
@@ -270,6 +270,8 @@ class LineUtils{
             hero: {
                 type: "image",
                 url: image_url,
+                size: "full",
+                aspectRatio: "20:13",
             },
             body: {
                 type: "box",
@@ -388,6 +390,7 @@ class LineUtils{
                         type: "image",
                         url: list[i].image_url,
                         size: "sm",
+                        aspectMode: "cover",
                         flex: 1
                     }
                 ],
@@ -414,7 +417,8 @@ class LineUtils{
                 hero: {
                     type: "image",
                     url: list[i].image_url,
-                    size: "full"
+                    size: "full",
+                    aspectMode: "cover"
                 },
                 body: {
                     type: "box",
