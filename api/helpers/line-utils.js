@@ -58,7 +58,7 @@ class LineUtils{
 
     lambda(){
         return async (event, context, callback) => {
-            console.log(context.req);
+//            console.log(context.req);
 
             const signature = crypto.createHmac('SHA256', this.secret).update(event.body).digest('base64');
             if( signature != event.headers['x-line-signature'] ){
@@ -154,35 +154,6 @@ class LineUtils{
         return this.createSuggestion(text, suggestions);
     }
 
-    /* list = [] */
-    createSuggestion(text, list){
-        var quick = {
-            type: "text",
-            text: text,
-            quickReply: {
-                items: []
-            }
-        };
-
-        for( var i = 0 ; i < list.length ; i++ ){
-            if( typeof list[i].title == 'string' || list[i].title instanceof String ){
-                var action = {
-                    type: 'action',
-                    action: {
-                        type : 'message',
-                        label: list[i].title,
-                        text: list[i].title
-                    }
-                };
-                quick.quickReply.items.push(action);
-            }else{
-                console.log('Not supported');
-            }
-        }
-
-        return quick;
-    }
-
     convertSimpleResponse(simpleResponse){
         var message = simpleResponse.displayText;
         if( !message ) 
@@ -192,7 +163,7 @@ class LineUtils{
 
     convertBasicCard(basicCard){
         var button = basicCard.buttons[0];
-        return this.createBasicCard(basicCard.title, basicCard.subtitle, basicCard.image.url, basicCard.formattedText, button.title, button.openUrlAction.url );
+        return this.createBasicCard(basicCard.title, basicCard.subtitle, basicCard.image.url, basicCard.formattedText, button.title, { type: "uri", uri: button.openUrlAction.url } );
     }
 
     convertList(listSelect){
@@ -202,7 +173,8 @@ class LineUtils{
                 title: listSelect.items[i].title,
                 desc: listSelect.items[i].description,
                 image_url: listSelect.items[i].image.url,
-                message: listSelect.items[i].optionInfo.key
+                action_text: listSelect.items[i].optionInfo.key,
+                action: { type: "message" }
             });
         }
         return this.createList(listSelect.title, list );
@@ -215,120 +187,173 @@ class LineUtils{
                 title: carouselSelect.items[i].title,
                 desc: carouselSelect.items[i].description,
                 image_url: carouselSelect.items[i].image.url,
-                message: carouselSelect.items[i].optionInfo.key
+                action_text: carouselSelect.items[i].optionInfo.key,
+                action: { type: "message" }
             });
         }
-        return this.createCarousel(list);
+        return this.createCarousel('#', list);
+    }
+
+    makeAction(title, action){
+        if( !action )
+            action = { type: "message" };
+
+        if( action.type == "postback" ){
+            return {
+                type: "postback",
+                label: title,
+                data: action.data,
+                displayText: title
+            };
+        }else if( action.type == 'uri' ){
+            return {
+                type: "uri",
+                label: title,
+                uri: action.uri
+            };
+        }else{
+//            action.type == 'message'
+            return {
+                type: "message",
+                label: title,
+                text: title
+            };
+        }
+    }
+
+    createQuickReply(list){
+        var quickReply = {
+            items: []
+        };
+        for( var i = 0 ; i < list.length ; i++ ){
+            if( typeof list[i].title == 'string' || list[i].title instanceof String ){
+                var action = {
+                    type: 'action',
+                    action: this.makeAction(list[i].title, list[i].action)
+                };
+                quickReply.items.push(action);
+            }else{
+                console.log('Not supported');
+            }
+        }
+        return quickReply;
+    }
+
+    wrapFlexMessage(title, contents){
+        var flex = {
+            type: "flex",
+            altText: title,
+            contents: contents
+        };
+
+        return flex;
+    }
+
+    /* list = [] */
+    createSuggestion(text, list){
+        var quick = {
+            type: "text",
+            text: text,
+            quickReply: this.createQuickReply(list)
+        };
+
+        return quick;
     }
 
     createSimpleResponse(text){
         return { type: 'text', text: text };
     }
 
-    createBasicCard(title, sub_title, image_url, text, btn_text, url ){
-        var flex = {
-            type: "flex",
-            altText: title,
-            contents: {
-                type: "bubble",
-                hero: {
-                    type: "image",
-                    url: image_url,
-                    size: "full"
-                },
-                body: {
-                    type: "box",
-                    layout: "vertical",
-                    contents: [
-                        {
-                            type: "box",
-                            layout: "vertical",
-                            contents: [
-                                {
-                                    type: "text",
-                                    text: title,
-                                    weight: "bold",
-                                    size: "md"
-                                },
-                                {
-                                    type: "text",
-                                    text: sub_title,
-                                    color: "#aaaaaa",
-                                    size: "xs",
-                                    wrap: true
-                                },
-                                {
-                                    type: "spacer",
-                                    size: "sm"
-                                }
-                            ]
-                        },
-                        {
-                            type: "text",
-                            text: text,
-                            size: "sm",
-                            wrap: true
-                        }
-                    ]
-                },
-                footer: {
-                    type: "box",
-                    layout: "vertical",
-                    contents: [
-                        {
-                            type: "button",
-                            style: "link",
-                            height: "sm",
-                            action: {
-                                type: "uri",
-                                label: btn_text,
-                                uri: url
+    createBasicCard(title, sub_title, image_url, text, action_text, action ){
+        var contents = {
+            type: "bubble",
+            hero: {
+                type: "image",
+                url: image_url,
+            },
+            body: {
+                type: "box",
+                layout: "vertical",
+                contents: [
+                    {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                            {
+                                type: "text",
+                                text: title,
+                                weight: "bold",
+                                size: "md"
+                            },
+                            {
+                                type: "text",
+                                text: sub_title,
+                                color: "#aaaaaa",
+                                size: "xs",
+                                wrap: true
+                            },
+                            {
+                                type: "spacer",
+                                size: "sm"
                             }
-                        }
-                    ],
-                    flex: 0
-                }
+                        ]
+                    },
+                    {
+                        type: "text",
+                        text: text,
+                        size: "sm",
+                        wrap: true
+                    }
+                ]
+            },
+            footer: {
+                type: "box",
+                layout: "vertical",
+                contents: [
+                    {
+                        type: "button",
+                        height: "sm",
+                        action : this.makeAction(action_text, action)
+                    }
+                ],
+                flex: 0
             }
-        }
-
-        return flex;
+        };
+    
+        return this.wrapFlexMessage(title, contents);
     }
 
-    /* list = [ { title, desc, image_url, message } ] */
+    /* list = [ { title, desc, image_url, action_text, action } ] */
     createList(title, list){
-        var flex = {
-            type: "flex",
-            altText: title,
-            contents: {
-                type: "bubble",
-                styles: {
-                    header: {
-                        backgroundColor: "#eeeeee"
-                    }
-                },
+        var contents = {
+            type: "bubble",
+            styles: {
                 header: {
-                    type: "box",
-                    layout: "horizontal",
-                    contents: [
-                        {
-                            type: "text",
-                            text: title,
-                            size: "sm",
-                            color: "#777777"
-                        }
-                    ]
-                },
-                body: {
-                    type: "box",
-                    layout: "vertical",
-                    contents: []
+                    backgroundColor: "#eeeeee"
                 }
+            },
+            header: {
+                type: "box",
+                layout: "horizontal",
+                contents: [
+                    {
+                        type: "text",
+                        text: title,
+                        size: "sm",
+                        color: "#777777"
+                    }
+                ]
+            },
+            body: {
+                type: "box",
+                layout: "vertical",
+                contents: []
             }
         };
 
         for( var i = 0 ; i < list.length; i++ ){
             if( i != 0 ){
-                flex.contents.body.contents.push({
+                contents.body.contents.push({
                     type: "separator",
                     margin: 'md'
                 });
@@ -366,32 +391,26 @@ class LineUtils{
                         flex: 1
                     }
                 ],
-                action: {
-                    type: "message",
-                    text: list[i].message
-                }
+                action: this.makeAction(list[i].action_text, list[i].action)
             };
 
-            flex.contents.body.contents.push(option);
+            contents.body.contents.push(option);
         }
 
-        return flex;
+        return this.wrapFlexMessage(title, contents);
     }
 
-    /* list = [title, desc, image_url, message] */
-    createCarousel(list){
-        var flex =  {
-            type: "flex",
-            altText: "#",
-            contents: {
-                "type": "carousel",
-                "contents": []
-            }
+    /* list = [title, desc, image_url, action_text, action] */
+    createCarousel(title, list){
+        var contents = {
+            type: "carousel",
+            contents: []
         };
 
         for( var i = 0 ; i < list.length ; i++ ){
             var option = {
                 type: "bubble",
+                size: "kilo",
                 hero: {
                     type: "image",
                     url: list[i].image_url,
@@ -421,17 +440,14 @@ class LineUtils{
                             ]
                         }
                     ],
-                    action: {
-                        type: "message",
-                        text: list[i].message
-                    }
+                    action: this.makeAction(list[i].action_text, list[i].action)
                 }
             };
 
-            flex.contents.contents.push(option);
+            contents.contents.push(option);
         }
 
-        return flex;
+        return this.wrapFlexMessage(title, contents);
     }
 };
 
