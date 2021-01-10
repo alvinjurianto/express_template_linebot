@@ -325,6 +325,61 @@ class LineUtils{
         return this.wrapFlexMessage(title, contents);
     }
 
+    createSimpleCard(title, sub_title, text, action_text, action ){
+        var contents = {
+                type: "bubble",
+                body: {
+                    type: "box",
+                    layout: "vertical",
+                    contents: [
+                        {
+                            type: "box",
+                            layout: "vertical",
+                            contents: [
+                                {
+                                    type: "text",
+                                    text: title,
+                                    weight: "bold",
+                                    size: "md"
+                                },
+                                {
+                                    type: "text",
+                                    text: sub_title,
+                                    color: "#aaaaaa",
+                                    size: "xs",
+                                    wrap: true
+                                },
+                                {
+                                    type: "spacer",
+                                    size: "sm"
+                                }
+                            ]
+                        },
+                        {
+                            type: "text",
+                            text: text,
+                            size: "sm",
+                            wrap: true
+                        }
+                    ]
+                },
+                footer: {
+                    type: "box",
+                    layout: "vertical",
+                    contents: [
+                        {
+                            type: "button",
+                            height: "sm",
+                            action : this.makeAction(action_text, action)
+                        }
+                    ],
+                    flex: 0
+                }
+        };
+
+        return this.wrapFlexMessage(title, contents);
+    }
+    
     /* list = [ { title, desc, image_url, action_text, action } ] */
     createList(title, list){
         var contents = {
