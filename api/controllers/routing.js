@@ -1,6 +1,8 @@
 'use strict';
 
-const CONTROLLERS_BASE = './api/controllers/';
+const THIS_BASE_PATH = process.env.THIS_BASE_PATH;
+
+const CONTROLLERS_BASE = THIS_BASE_PATH + '/api/controllers/';
 const TARGET_FNAME = "swagger.yaml";
 
 const express = require('express');
