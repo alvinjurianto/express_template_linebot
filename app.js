@@ -30,7 +30,7 @@ app.use(session({
     cookie: { secure: true }
 }));
 
-process.env.THIS_BASE_PATH = __dirname || '.';
+process.env.THIS_BASE_PATH = __dirname;
 console.log('THIS_BASE_PATH: ' + process.env.THIS_BASE_PATH);
 const routing = require(process.env.THIS_BASE_PATH + '/api/controllers/routing');
 
