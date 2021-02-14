@@ -30,7 +30,8 @@ app.use(session({
     cookie: { secure: true }
 }));
 
-const routing = require('./api/controllers/routing');
+process.env.THIS_BASE_PATH = __dirname || '.';
+const routing = require(__dirname + '/api/controllers/routing');
 
 const BASE_PATH = process.env.BASE_PATH || '/';
 
