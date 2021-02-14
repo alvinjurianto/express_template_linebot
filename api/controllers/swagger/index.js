@@ -1,13 +1,15 @@
 'use strict';
 
+const THIS_BASE_PATH = process.env.THIS_BASE_PATH;
+
 const HELPER_BASE = process.env.HELPER_BASE || '../../helpers/';
 const Response = require(HELPER_BASE + 'response');
 
 const swagger_utils = require(HELPER_BASE + 'swagger_utils');
 const fs = require('fs');
 
-const SWAGGER_FILE = "./api/swagger/swagger.yaml";
-const CONTROLLERS_BASE = './api/controllers/';
+const SWAGGER_FILE = THIS_BASE_PATH + "/api/swagger/swagger.yaml";
+const CONTROLLERS_BASE = THIS_BASE_PATH + '/api/controllers/';
 const TARGET_FNAME = "swagger.yaml";
 
 exports.handler = async (event, context, callback) => { 
