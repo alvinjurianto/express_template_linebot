@@ -31,7 +31,8 @@ app.use(session({
 }));
 
 process.env.THIS_BASE_PATH = __dirname || '.';
-const routing = require(__dirname + '/api/controllers/routing');
+console.log('THIS_BASE_PATH: ' + process.env.THIS_BASE_PATH);
+const routing = require(process.env.THIS_BASE_PATH + '/api/controllers/routing');
 
 const BASE_PATH = process.env.BASE_PATH || '/';
 
