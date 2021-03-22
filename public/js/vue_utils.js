@@ -34,6 +34,6 @@ function vue_add_components(options, components){
 }
 
 function datgui_add(property, p1, p2, p3){
-    var ctrl = gui.add(vue, property, p1, p2, p3);
+    var ctrl = datgui.add(vue, property, p1, p2, p3);
     vue.$watch(property, (v) => ctrl.setValue(v) );
 }
