@@ -1,6 +1,7 @@
 'use strict';
 
-//var vConsole = new VConsole();
+//const vConsole = new VConsole();
+//const datgui = new dat.GUI();
 
 var vue_options = {
     el: "#top",
