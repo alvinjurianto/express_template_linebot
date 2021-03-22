@@ -37,3 +37,8 @@ function datgui_add(property, p1, p2, p3){
     var ctrl = datgui.add(vue, property, p1, p2, p3);
     vue.$watch(property, (v) => ctrl.setValue(v) );
 }
+
+function datgui_addColor(property){
+    var ctrl = datgui.addColor(vue, property);
+    vue.$watch(property, (v) => ctrl.setValue(v) );
+}
