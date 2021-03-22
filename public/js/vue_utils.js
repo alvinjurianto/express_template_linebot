@@ -32,3 +32,8 @@ function vue_add_components(options, components){
         options.components[component] = components[component];
     }
 }
+
+function dat_add(name, p1, p2, p3){
+    var p = gui.add(vue, name, p1, p2, p3);
+    vue.$watch(name, (v) => p.setValue(v) );
+}
