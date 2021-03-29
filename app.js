@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const fs = require('fs');
+const { graphqlHTTP } = require('express-graphql');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -35,8 +36,17 @@ console.log('THIS_BASE_PATH: ' + process.env.THIS_BASE_PATH);
 const routing = require(process.env.THIS_BASE_PATH + '/api/controllers/routing');
 
 const BASE_PATH = process.env.BASE_PATH || '/';
-
 app.use(BASE_PATH, routing);
+
+const schema_list = require(process.env.THIS_BASE_PATH + '/api/controllers/graphql');
+schema_list.forEach( element => {
+  app.use('/graphql_' + element.folder , graphqlHTTP({
+    schema: element.schema,
+    graphiql: true,
+  }));
+  console.log("GraphQL Endpoint: " + "/graphql_" + element.folder);
+});
+
 app.all('*', function(req, res) {
 //  console.log(req);
   console.log('Unknown Endpoint');
