@@ -34,16 +34,28 @@ function parse_graphql() {
       const resolver = require(CONTROLLERS_BASE + folder);
 
       let resolvers = {};
+      let num_of_resolve = 0;
       doc.definitions.forEach(element1 =>{
+        if( element1.kind != 'ObjectTypeDefinition')
+          return;
+
         const define_name = element1.name.value;
-        resolvers[define_name] = {};
+        if( define_name != 'Query' && define_name != 'Mutation' )
+          return;
+
+        if( !resolvers[define_name] )
+          resolvers[define_name] = {};
 
         element1.fields.forEach( element2 =>{
           const field_name = element2.name.value;
 
           resolvers[define_name][field_name] = resolver.graphql;
+          num_of_resolve++;
         });
       });
+
+      if( num_of_resolve <= 0 )
+        return;
 
       const executableSchema = makeExecutableSchema({
         typeDefs,
