@@ -33,7 +33,7 @@ function gql_escape(str){
 
 async function gql_query(url, templ, params){
   var body = {
-      query: templ(...params)
+      query: templ(params)
   };
   var json = await gql_do_post(url, body );
   return json.data;
