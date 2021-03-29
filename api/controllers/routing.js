@@ -22,6 +22,8 @@ folders.forEach(folder => {
 
   try{
     const fname = CONTROLLERS_BASE + folder + "/" + TARGET_FNAME;
+    if( !fs.existsSync(fname) )
+      return;
     const stats_file = fs.statSync(fname);
     if( !stats_file.isFile() )
       return;
