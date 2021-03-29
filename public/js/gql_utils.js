@@ -41,7 +41,7 @@ async function gql_query(url, templ, params){
 
 async function gql_mutation(url, templ, params){
   var body = {
-      mutation: templ(...params)
+      mutation: templ(params)
   };
   var json = await gql_do_post(url, body );
   return json.data;
