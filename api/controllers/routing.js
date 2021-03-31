@@ -104,66 +104,36 @@ folders.forEach(folder => {
         const path = docPath.key.value;
         const method = docMethod.key.value;
         console.log(path, method, handler, JSON.stringify(options));
+        
+        let postprocess;
+        let nextfunc;
         if( options.func_type == "express"){
           // x-functype: express の場合
-          const func = require('./' + folder)[handler];
-
-          switch(method){
-            case 'get': {
-              router.get(path, func);
-              break;
-            }
-            case 'post': {
-              router.post(path, func);
-              break;
-            }
-            case 'head': {
-              router.head(path, func);
-              break;
-            }
-          }
+          nextfunc = require('./' + folder)[handler];
         }else
         if( options.func_type == 'empty' ){
           // x-functype: empty の場合
-          switch(method){
-            case 'get': {
-              router.get(path, (req, res) =>{
-                res.json({});
-              });
-              break;
-            }
-            case 'post': {
-              router.post(path, (req, res) =>{
-                res.json({});
-              });
-              break;
-            }
-            case 'head': {
-              router.head(path, (req, res) =>{
-                res.json({});
-              });
-              break;
-            }
-          }
+          nextfunc = (req, res) => res.json({});
         }else{
-          // x-functype: normal の場合
-          options.postprocess = require('./' + folder)[handler];
+          // x-functype: normal|alexa|lambda の場合
+          postprocess = require('./' + folder)[handler];
+          nextfunc = routing;
+        }
 
           switch(method){
             case 'get': {
-              router.get(path, preprocess(options), routing);
+            router.get(path, preprocess(options, postprocess), nextfunc);
               break;
             }
             case 'post': {
-              router.post(path, preprocess(options), routing);
+            router.post(path, preprocess(options, postprocess), nextfunc);
               break;
             }
             case 'head': {
-              router.head(path, preprocess(options), routing);
+            router.head(path, preprocess(options, postprocess), nextfunc);
               break;
             }
           }
-        }
       });
     });
   }catch(error){
@@ -172,15 +142,15 @@ folders.forEach(folder => {
   }
 });
 
-// x-functype: normal の場合の前処理
-function preprocess(options){
+// x-functype: 前処理
+function preprocess(options, postprocess){
   return function(req, res, next){
     req.swagger = {
       operation: {
         operationId: options.operationId
       }
     }
-    req.postprocess = options.postprocess;
+    req.postprocess = postprocess;
     res.func_type = options.func_type;
 
     // securityの処理
