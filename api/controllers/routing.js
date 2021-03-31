@@ -66,7 +66,7 @@ folders.forEach(folder => {
           options.security = docSecurity[0].value.items[0].items[0].key.value;
 
         // オプションタグ: x-functype
-        // x-functype: (express|empty|normal)
+        // x-functype: (express|empty|normal|alexa|lambda)
         const docFuncType = docMethod.value.items.filter(item => item.key.value == 'x-functype' );
         if( docFuncType.length == 1 )
           options.func_type = docFuncType[0].value.value;
