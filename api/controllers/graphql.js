@@ -4,6 +4,8 @@ const THIS_BASE_PATH = process.env.THIS_BASE_PATH;
 const CONTROLLERS_BASE = THIS_BASE_PATH + '/api/controllers/';
 const GRAPHQL_TARGET_FNAME = "schema.graphql";
 
+const DEFAULT_HANDLER = "graphql";
+
 const fs = require('fs');
 const { makeExecutableSchema } = require('graphql-tools');
 const gql = require('graphql-tag');
@@ -30,26 +32,48 @@ function parse_graphql() {
 
       // schema.graphqlの解析
       var typeDefs = fs.readFileSync(fname).toString();
-      const doc = gql(typeDefs);
-      const resolver = require(CONTROLLERS_BASE + folder);
+      const gqldoc = gql(typeDefs);
+      const handler = require(CONTROLLERS_BASE + folder);
 
       let resolvers = {};
       let num_of_resolve = 0;
-      doc.definitions.forEach(element1 =>{
+      gqldoc.definitions.forEach(element1 =>{
         if( element1.kind != 'ObjectTypeDefinition')
           return;
 
         const define_name = element1.name.value;
         if( define_name != 'Query' && define_name != 'Mutation' )
           return;
+            
+        // handler(Object部)の解析
+        let object_handler = DEFAULT_HANDLER;
+        var h1 = element1.directives.find(item => item.name.value == 'handler');
+        if( h1 ){
+          var h2 = h1.arguments.find(item => item.name.value == 'handler');
+          if( h2 ){
+            object_handler = h2.value.value;
+          }
+        }
 
         if( !resolvers[define_name] )
           resolvers[define_name] = {};
 
         element1.fields.forEach( element2 =>{
-          const field_name = element2.name.value;
+          if( element2.kind != 'FieldDefinition')
+            return;
 
-          resolvers[define_name][field_name] = resolver.graphql;
+          // handler(Field部)の解析
+          let field_handler = object_handler;
+          var h1 = element2.directives.find(item => item.name.value == 'handler');
+          if( h1 ){
+            var h2 = h1.arguments.find(item => item.name.value == 'handler');
+            if( h2 ){
+              field_handler = h2.value.value;
+            }
+          }
+  
+          const field_name = element2.name.value;
+          resolvers[define_name][field_name] = handler[field_handler];
           num_of_resolve++;
         });
       });
@@ -58,7 +82,7 @@ function parse_graphql() {
         return;
 
       const executableSchema = makeExecutableSchema({
-        typeDefs,
+        typeDefs: [handlerDirective, gqldoc],
         resolvers
       });
 
@@ -73,5 +97,11 @@ function parse_graphql() {
 
   return schema_list;
 }
+
+const handlerDirective = `
+  directive @handler(
+    handler: String
+  ) on OBJECT | FIELD_DEFINITION
+`;
 
 module.exports = parse_graphql();
