@@ -42,7 +42,7 @@ const schema_list = require(process.env.THIS_BASE_PATH + '/api/controllers/graph
 schema_list.forEach( element => {
   app.use('/graphql_' + element.folder , graphqlHTTP({
     schema: element.schema,
-    graphiql: true,
+    graphiql: true, // for development
   }));
   console.log("GraphQL Endpoint: " + "/graphql_" + element.folder);
 });
