@@ -44,7 +44,7 @@ schema_list.forEach( element => {
     schema: element.schema,
     graphiql: true, // for development
   }));
-  console.log("GraphQL Endpoint: " + "/graphql_" + element.folder);
+  console.log("/graphql_" + element.folder + " graphql handler");
 });
 
 app.all('*', function(req, res) {
