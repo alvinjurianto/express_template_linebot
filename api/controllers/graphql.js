@@ -33,13 +33,26 @@ function parse_graphql() {
       // schema.graphqlの解析
       var typeDefs = fs.readFileSync(fname).toString();
       const gqldoc = gql(typeDefs);
+      console.log(JSON.stringify(gqldoc,null,2))
       const handler = require(CONTROLLERS_BASE + folder);
 
       let resolvers = {};
       let num_of_resolve = 0;
+      let endpoint = "/graphql_" + folder;
       gqldoc.definitions.forEach(element1 =>{
-        if( element1.kind != 'ObjectTypeDefinition')
+        if( element1.kind == 'SchemaDefinition'){
+          var h1 = element1.directives.find(item => item.name.value == 'endpoint');
+          if( h1 ){
+            var h2 = h1.arguments.find(item => item.name.value == 'endpoint');
+            if( h2 ){
+              endpoint = h2.value.value;
+            }
+          }
           return;
+        }
+        if( element1.kind != 'ObjectTypeDefinition'){
+          return;
+        }
 
         const define_name = element1.name.value;
         if( define_name != 'Query' && define_name != 'Mutation' )
@@ -73,7 +86,10 @@ function parse_graphql() {
           }
   
           const field_name = element2.name.value;
-          resolvers[define_name][field_name] = handler[field_handler];
+          resolvers[define_name][field_name] = (parent, args, context, info) =>{
+            console.log('[' + info.path.typename + '.' + info.path.key + ' calling]');
+            return handler[field_handler](parent, args, context, info);
+          };
           num_of_resolve++;
         });
       });
@@ -88,7 +104,7 @@ function parse_graphql() {
 
       schema_list.push({
         schema: executableSchema,
-        folder: folder
+        endpoint: endpoint
       });
     } catch (error) {
       console.log(error);
@@ -102,6 +118,9 @@ const handlerDirective = `
   directive @handler(
     handler: String
   ) on OBJECT | FIELD_DEFINITION
+  directive @endpoint(
+    endpoint: String
+  ) on SCHEMA
 `;
 
 module.exports = parse_graphql();
