@@ -40,11 +40,11 @@ app.use(BASE_PATH, routing);
 
 const schema_list = require(process.env.THIS_BASE_PATH + '/api/controllers/graphql');
 schema_list.forEach( element => {
-  app.use('/graphql_' + element.folder , graphqlHTTP({
+  app.use(element.endpoint, graphqlHTTP({
     schema: element.schema,
     graphiql: true, // for development
   }));
-  console.log("/graphql_" + element.folder + " graphql handler");
+  console.log(element.endpoint + " graphql handler");
 });
 
 app.all('*', function(req, res) {
