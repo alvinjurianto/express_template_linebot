@@ -31,25 +31,26 @@ function parse_graphql() {
         return;
 
       // schema.graphqlの解析
-      var typeDefs = fs.readFileSync(fname).toString();
+      const typeDefs = fs.readFileSync(fname).toString();
       const gqldoc = parse(typeDefs);
-      console.log(JSON.stringify(gqldoc,null,2))
       const handler = require(CONTROLLERS_BASE + folder);
 
       let resolvers = {};
       let num_of_resolve = 0;
-      let endpoint = "/graphql_" + folder;
+      let endpoint = "/graphql_" + folder; // default endpoint
       gqldoc.definitions.forEach(element1 =>{
         if( element1.kind == 'SchemaDefinition'){
-          var h1 = element1.directives.find(item => item.name.value == 'endpoint');
+          // endpoint(Schema部)の解析
+          const h1 = element1.directives.find(item => item.name.value == 'endpoint');
           if( h1 ){
-            var h2 = h1.arguments.find(item => item.name.value == 'endpoint');
+            const h2 = h1.arguments.find(item => item.name.value == 'endpoint');
             if( h2 ){
               endpoint = h2.value.value;
             }
           }
           return;
         }
+
         if( element1.kind != 'ObjectTypeDefinition'){
           return;
         }
@@ -60,9 +61,9 @@ function parse_graphql() {
             
         // handler(Object部)の解析
         let object_handler = DEFAULT_HANDLER;
-        var h1 = element1.directives.find(item => item.name.value == 'handler');
+        const h1 = element1.directives.find(item => item.name.value == 'handler');
         if( h1 ){
-          var h2 = h1.arguments.find(item => item.name.value == 'handler');
+          const h2 = h1.arguments.find(item => item.name.value == 'handler');
           if( h2 ){
             object_handler = h2.value.value;
           }
@@ -77,14 +78,15 @@ function parse_graphql() {
 
           // handler(Field部)の解析
           let field_handler = object_handler;
-          var h1 = element2.directives.find(item => item.name.value == 'handler');
+          const h1 = element2.directives.find(item => item.name.value == 'handler');
           if( h1 ){
-            var h2 = h1.arguments.find(item => item.name.value == 'handler');
+            const h2 = h1.arguments.find(item => item.name.value == 'handler');
             if( h2 ){
               field_handler = h2.value.value;
             }
           }
   
+          // resolverの設定
           const field_name = element2.name.value;
           resolvers[define_name][field_name] = (parent, args, context, info) =>{
             console.log('[' + info.path.typename + '.' + info.path.key + ' calling]');
@@ -99,7 +101,7 @@ function parse_graphql() {
 
       const executableSchema = makeExecutableSchema({
         typeDefs: [handlerDirective, gqldoc],
-        resolvers
+        resolvers: resolvers
       });
 
       schema_list.push({
