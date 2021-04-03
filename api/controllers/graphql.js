@@ -8,7 +8,7 @@ const DEFAULT_HANDLER = "graphql";
 
 const fs = require('fs');
 const { makeExecutableSchema } = require('graphql-tools');
-const gql = require('graphql-tag');
+const { parse } = require('graphql');
 
 function parse_graphql() {
   let schema_list = [];
@@ -32,7 +32,7 @@ function parse_graphql() {
 
       // schema.graphqlの解析
       var typeDefs = fs.readFileSync(fname).toString();
-      const gqldoc = gql(typeDefs);
+      const gqldoc = parse(typeDefs);
       console.log(JSON.stringify(gqldoc,null,2))
       const handler = require(CONTROLLERS_BASE + folder);
 
