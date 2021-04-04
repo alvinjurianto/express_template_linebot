@@ -292,7 +292,7 @@ function routing(req, res) {
               return_response(res, response);
       });
       if( task instanceof Promise || (task && typeof task.then === 'function') ){
-          task.then(ret =>{
+          return task.then(ret =>{
               if( ret ){
                   console.log('promise is called');
                   return_response(res, ret);
