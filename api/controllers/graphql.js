@@ -4,7 +4,7 @@ const THIS_BASE_PATH = process.env.THIS_BASE_PATH;
 const CONTROLLERS_BASE = THIS_BASE_PATH + '/api/controllers/';
 const GRAPHQL_TARGET_FNAME = "schema.graphql";
 
-const DEFAULT_HANDLER = "graphql";
+const DEFAULT_HANDLER = "handler";
 
 const fs = require('fs');
 const { makeExecutableSchema } = require('graphql-tools');
@@ -30,8 +30,9 @@ function parse_graphql() {
       if (!stats_file.isFile())
         return;
 
-      // schema.graphqlの解析
       const typeDefs = fs.readFileSync(fname).toString();
+
+      // schema.graphqlの解析
       const gqldoc = parse(typeDefs);
       const handler = require(CONTROLLERS_BASE + folder);
 
@@ -60,12 +61,19 @@ function parse_graphql() {
           return;
             
         // handler(Object部)の解析
-        let object_handler = DEFAULT_HANDLER;
+        let object_handler = {
+          handler: DEFAULT_HANDLER,
+          type: "normal"
+        };
         const h1 = element1.directives.find(item => item.name.value == 'handler');
         if( h1 ){
           const h2 = h1.arguments.find(item => item.name.value == 'handler');
           if( h2 ){
-            object_handler = h2.value.value;
+            object_handler.handler = h2.value.value;
+          }
+          const h3 = h1.arguments.find(item => item.name.value == 'type');
+          if( h3 ){
+            object_handler.type = h3.value.value;
           }
         }
 
@@ -76,21 +84,10 @@ function parse_graphql() {
           if( element2.kind != 'FieldDefinition')
             return;
 
-          // handler(Field部)の解析
-          let field_handler = object_handler;
-          const h1 = element2.directives.find(item => item.name.value == 'handler');
-          if( h1 ){
-            const h2 = h1.arguments.find(item => item.name.value == 'handler');
-            if( h2 ){
-              field_handler = h2.value.value;
-            }
-          }
-  
           // resolverの設定
           const field_name = element2.name.value;
           resolvers[define_name][field_name] = (parent, args, context, info) =>{
-            console.log('[' + info.path.typename + '.' + info.path.key + ' calling]');
-            return handler[field_handler](parent, args, context, info);
+            return routing(object_handler.type, handler[object_handler.handler], parent, args, context, info);
           };
           num_of_resolve++;
         });
@@ -116,10 +113,71 @@ function parse_graphql() {
   return schema_list;
 }
 
+function routing(type, handler, parent, args, context, info){
+  console.log('[' + info.path.typename + '.' + info.path.key + ' calling]');
+
+  var task = null;
+  var func_response, func_error;
+
+  if( type == "normal" ){
+    task = handler(parent, args, context, info);
+  }else
+  if( type == "lambda" ){
+    var lambda_event = {
+      arguments: args,
+      request: {
+        headers: context.headers
+      },
+      info : {
+        parentTypeName: info.parentType,
+        fieldName: info.field
+      }
+    };
+    const lambda_context = {
+      succeed: (msg) => {
+          console.log('succeed called');
+          func_response = msg;
+      },
+      fail: (error) => {
+          console.log('failed called');
+          func_error = error;
+      },
+    };
+
+    task = handler(lambda_event, lambda_context, (error, response) =>{
+      console.log('callback called', response);
+      if( error )
+        func_error = error;
+      else
+        func_response = response;
+    });
+  }
+
+  if( task instanceof Promise || (task && typeof task.then === 'function') ){
+    return task.then(ret => {
+      console.log('promise is called');
+      if( ret || func_response )
+        return ret || func_response;
+      else
+        if( func_error )
+          throw func_error;
+        else
+          return null;
+    })
+    .catch(err =>{
+      console.log('error throwed: ' + err);
+      throw err;
+    })
+  }else{
+    console.log('return called');
+    return task;
+  }
+}
+
 const handlerDirective = `
   directive @handler(
-    handler: String
-  ) on OBJECT | FIELD_DEFINITION
+    handler: String, type: String
+  ) on OBJECT
   directive @endpoint(
     endpoint: String
   ) on SCHEMA
