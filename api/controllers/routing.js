@@ -321,7 +321,6 @@ function return_none(res){
     else
         res.returned = true;
 
-    res.statusCode = 200;
     res.type('application/json');
 
     if(res.func_type == 'lambda'){
