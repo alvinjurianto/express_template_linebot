@@ -13,20 +13,26 @@ function gql_do_post(url, body, apikey) {
 
   return fetch(url, param)
   .then((response) => {
-      if (!response.ok)
-          throw 'status is not 200';
-      return response.json();
+    if (!response.ok)
+        throw 'status is not 200';
+    return response.json();
   });
 }
 
+function gql_isString(obj) {
+  return typeof (obj) == "string" || obj instanceof String;
+};
+
 function gql_templ(strings, ...keys) {
   return (function(...values) {
-      var result = [strings[0]];
-      keys.forEach(function(key, i) {
-          var value = values[key];
-          result.push(value, strings[i + 1]);
-      });
-      return result.join('');
+    var result = [strings[0]];
+    keys.forEach(function(key, i) {
+      var value = values[key];
+      if( gql_isString(value ) )
+        value = gql_escape(value);
+      result.push(value, strings[i + 1]);
+    });
+    return result.join('');
   });
 }
 
@@ -40,13 +46,17 @@ async function gql_query(url, templ, params, apikey){
     query: templ(...params)
   };
   var json = await gql_do_post(url, body, apikey );
+  if( json.errors )
+    throw json;
   return json.data;
 }
 
-async function gql_mutation(url, templ, params){
+async function gql_mutation(url, templ, params, apikey){
   var body = {
       mutation: templ(...params)
   };
-  var json = await gql_do_post(url, body );
+  var json = await gql_do_post(url, body, apikey );
+  if( json.errors )
+    throw json;
   return json.data;
 }
