@@ -8,7 +8,7 @@ const DEFAULT_HANDLER = "handler";
 
 const fs = require('fs');
 const { makeExecutableSchema } = require('graphql-tools');
-const { parse } = require('graphql');
+const { parse, GraphQLError } = require('graphql');
 
 function parse_graphql() {
   let schema_list = [];
@@ -34,6 +34,7 @@ function parse_graphql() {
 
       // schema.graphqlの解析
       const gqldoc = parse(typeDefs);
+      console.log(JSON.stringify(gqldoc, null, 2));
       const handler = require(CONTROLLERS_BASE + folder);
 
       let resolvers = {};
@@ -52,7 +53,7 @@ function parse_graphql() {
           return;
         }
 
-        if( element1.kind != 'ObjectTypeDefinition'){
+        if( element1.kind != 'ObjectTypeDefinition' && element1.kind != "ObjectTypeExtension" ){
           return;
         }
 
@@ -116,61 +117,69 @@ function parse_graphql() {
 function routing(type, handler, parent, args, context, info){
   console.log('[' + info.path.typename + '.' + info.path.key + ' calling]');
 
-  var task = null;
-  var func_response, func_error;
+  try{
+    var task = null;
+    var func_response, func_error;
+  
+    if( type == "normal" ){
+      task = handler(parent, args, context, info);
+    }else
+    if( type == "lambda" ){
+      var lambda_event = {
+        arguments: args,
+        request: {
+          headers: context.headers
+        },
+        info : {
+          parentTypeName: info.parentType,
+          fieldName: info.field
+        }
+      };
+      const lambda_context = {
+        succeed: (msg) => {
+            console.log('succeed called');
+            func_response = msg;
+        },
+        fail: (error) => {
+            console.log('failed called');
+            func_error = error;
+        },
+        context: context,
+        info: info
+      };
 
-  if( type == "normal" ){
-    task = handler(parent, args, context, info);
-  }else
-  if( type == "lambda" ){
-    var lambda_event = {
-      arguments: args,
-      request: {
-        headers: context.headers
-      },
-      info : {
-        parentTypeName: info.parentType,
-        fieldName: info.field
-      }
-    };
-    const lambda_context = {
-      succeed: (msg) => {
-          console.log('succeed called');
-          func_response = msg;
-      },
-      fail: (error) => {
-          console.log('failed called');
+      task = handler(lambda_event, lambda_context, (error, response) =>{
+        console.log('callback called', response);
+        if( error )
           func_error = error;
-      },
-    };
-
-    task = handler(lambda_event, lambda_context, (error, response) =>{
-      console.log('callback called', response);
-      if( error )
-        func_error = error;
-      else
-        func_response = response;
-    });
-  }
-
-  if( task instanceof Promise || (task && typeof task.then === 'function') ){
-    return task.then(ret => {
-      console.log('promise is called');
-      if( ret || func_response )
-        return ret || func_response;
-      else
-        if( func_error )
-          throw func_error;
         else
-          return null;
-    })
-    .catch(err =>{
-      console.log('error throwed: ' + err);
-      throw err;
-    })
-  }else{
-    console.log('return called');
-    return task;
+          func_response = response;
+      });
+    }
+
+    if( task instanceof Promise || (task && typeof task.then === 'function') ){
+      return task.then(ret => {
+        console.log('promise is called');
+        if( func_response || ret ){
+          return func_response || ret;
+        }else{
+          if( func_error )
+            throw func_error;
+          else
+            return null;
+        }
+      })
+      .catch(error =>{
+        console.log('error throwed: ' + error);
+        throw new GraphQLError(error);
+      });
+    }else{
+      console.log('return called');
+      return task;
+    }
+  }catch(error){
+    console.log('error throwed: ' + error);
+    throw new GraphQLError(error);
   }
 }
 
