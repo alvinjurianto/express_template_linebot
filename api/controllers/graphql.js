@@ -171,7 +171,10 @@ function routing(type, handler, parent, args, context, info){
       })
       .catch(error =>{
         console.log('error throwed: ' + error);
-        throw new GraphQLError(error);
+        if( error instanceof GraphQLError )
+          throw error;
+        else
+          throw new GraphQLError(error);
       });
     }else{
       console.log('return called');
@@ -179,7 +182,10 @@ function routing(type, handler, parent, args, context, info){
     }
   }catch(error){
     console.log('error throwed: ' + error);
-    throw new GraphQLError(error);
+    if( error instanceof GraphQLError )
+      throw error;
+    else
+      throw new GraphQLError(error);
   }
 }
 
