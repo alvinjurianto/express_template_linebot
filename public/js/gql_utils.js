@@ -28,7 +28,7 @@ function gql_templ(strings, ...keys) {
     var result = [strings[0]];
     keys.forEach(function(key, i) {
       var value = values[key];
-      if( gql_isString(value ) )
+      if( gql_isString(value) )
         value = gql_escape(value);
       result.push(value, strings[i + 1]);
     });
@@ -41,20 +41,36 @@ function gql_escape(str){
   return t.slice(5, -1);
 }
 
-async function gql_query(url, templ, params, apikey){
-  var body = {
-    query: templ(...params)
-  };
+async function gql_query(url, exp, variables, apikey){
+  var body;  
+  if( Array.isArray(variables) ){
+    body = {
+      query: exp(...variables)
+    };
+  }else{
+    body = {
+      query: exp,
+      variables: variables
+    };
+  }
   var json = await gql_do_post(url, body, apikey );
   if( json.errors )
     throw json;
   return json.data;
 }
 
-async function gql_mutation(url, templ, params, apikey){
-  var body = {
-      mutation: templ(...params)
-  };
+async function gql_mutation(url, exp, variables, apikey){
+  var body;  
+  if( Array.isArray(variables) ){
+    body = {
+      mutation: exp(...variables)
+    };
+  }else{
+    body = {
+      mutation: exp,
+      variables: variables
+    };
+  }
   var json = await gql_do_post(url, body, apikey );
   if( json.errors )
     throw json;
