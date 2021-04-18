@@ -8,9 +8,7 @@ const CONTROLLERS_BASE = THIS_BASE_PATH + '/api/controllers/';
 const GRAPHQL_TARGET_FNAME = "schema.graphql";
 
 const fs = require('fs');
-const {
-  parse
-} = require('graphql');
+const { parse } = require('graphql');
 
 exports.handler = async (event, context, callback) => {
   let graphql_list = [];
@@ -66,7 +64,6 @@ exports.handler = async (event, context, callback) => {
   var html = "<h1>graphql explorer</h1>";
   graphql_list.map(item => {
     html += `<a href='..${item.endpoint}'>${item.folder}</a><br>`;
-  })
-  var response = new TextResponse("text/html", html);
-  return response;
+  });
+  return new TextResponse("text/html", html);
 };
