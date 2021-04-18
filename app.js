@@ -38,7 +38,7 @@ const routing = require(process.env.THIS_BASE_PATH + '/api/controllers/routing')
 const BASE_PATH = process.env.BASE_PATH || '/';
 app.use(BASE_PATH, routing);
 
-const schema_list = require(process.env.THIS_BASE_PATH + '/api/controllers/graphql');
+const schema_list = require(process.env.THIS_BASE_PATH + '/api/controllers/routing_graphql');
 schema_list.forEach( element => {
   app.use(element.endpoint, graphqlHTTP({
     schema: element.schema,
