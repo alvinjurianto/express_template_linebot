@@ -8,7 +8,9 @@ const CONTROLLERS_BASE = THIS_BASE_PATH + '/api/controllers/';
 const GRAPHQL_TARGET_FNAME = "schema.graphql";
 
 const fs = require('fs');
-const { parse } = require('graphql');
+const {
+  parse
+} = require('graphql');
 
 exports.handler = async (event, context, callback) => {
   let graphql_list = [];
@@ -16,7 +18,7 @@ exports.handler = async (event, context, callback) => {
   // schema.graphqlの検索
   const folders = fs.readdirSync(CONTROLLERS_BASE);
   folders.forEach(folder => {
-    if( !fs.existsSync(CONTROLLERS_BASE + folder) )
+    if (!fs.existsSync(CONTROLLERS_BASE + folder))
       return;
     const stats_dir = fs.statSync(CONTROLLERS_BASE + folder);
     if (!stats_dir.isDirectory())
@@ -24,7 +26,7 @@ exports.handler = async (event, context, callback) => {
 
     try {
       const fname = CONTROLLERS_BASE + folder + "/" + GRAPHQL_TARGET_FNAME;
-      if( !fs.existsSync(fname) )
+      if (!fs.existsSync(fname))
         return;
       const stats_file = fs.statSync(fname);
       if (!stats_file.isFile())
@@ -34,37 +36,37 @@ exports.handler = async (event, context, callback) => {
 
       // schema.graphqlの解析
       const gqldoc = parse(typeDefs);
-//      console.log(JSON.stringify(gqldoc, null, 2));
+      //      console.log(JSON.stringify(gqldoc, null, 2));
 
       let endpoint = "/graphql_" + folder; // default endpoint
-      gqldoc.definitions.forEach(element1 =>{
-        if( element1.kind == 'SchemaDefinition'){
+      gqldoc.definitions.forEach(element1 => {
+        if (element1.kind == 'SchemaDefinition') {
           // endpoint(Schema部)の解析
           const h1 = element1.directives.find(item => item.name.value == 'endpoint');
-          if( h1 ){
+          if (h1) {
             const h2 = h1.arguments.find(item => item.name.value == 'endpoint');
-            if( h2 ){
+            if (h2) {
               endpoint = h2.value.value;
             }
           }
           return;
         }
 
-			});
+      });
 
-			graphql_list.push( {
-				folder: folder,
-				endpoint: endpoint
-			});
-		} catch (error) {
+      graphql_list.push({
+        folder: folder,
+        endpoint: endpoint
+      });
+    } catch (error) {
       console.log(error);
     }
   });
 
-	var html = "<h1>graphql explorer</h1>";
-	graphql_list.map(item =>{
-		html += `<a href='..${item.endpoint}'>${item.folder}</a><br>`;
-	})
-	var response = new TextResponse("text/html", html);
-	return response;
+  var html = "<h1>graphql explorer</h1>";
+  graphql_list.map(item => {
+    html += `<a href='..${item.endpoint}'>${item.folder}</a><br>`;
+  })
+  var response = new TextResponse("text/html", html);
+  return response;
 };
