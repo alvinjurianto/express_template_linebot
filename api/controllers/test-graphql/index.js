@@ -1,6 +1,6 @@
 'use strict';
 
-exports.graphql = async(parent, args, context, info) =>{
+exports.handler = async(parent, args, context, info) =>{
 	console.log("args", JSON.stringify(args));
 	console.log("path", info.path);
 
