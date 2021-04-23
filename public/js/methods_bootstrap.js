@@ -1,4 +1,4 @@
-var methods_bootstrap = {
+const methods_bootstrap = {
     dialog_open: function(target, backdrop = 'static'){
         $(target).modal({backdrop: backdrop, keyboard: false});
     },
@@ -30,8 +30,4 @@ var methods_bootstrap = {
     clip_copy: async function(text){
     	return navigator.clipboard.writeText(text);
     },
-    render_loaded: function(enable = true){
-        if( this.render )
-            this.render.loaded = enable;
-    }
 };
