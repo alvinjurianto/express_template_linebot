@@ -12,7 +12,7 @@ const methods_bootstrap = {
         $(target).collapse("hide");
     },
     progress_open: function(title = '少々お待ちください。', backdrop){
-        this.progress_title = title;
+        this.$root.progress_title = title;
         this.dialog_open('#progress', backdrop);
     },
     progress_close: function(){
@@ -30,4 +30,16 @@ const methods_bootstrap = {
     clip_copy: async function(text){
     	return navigator.clipboard.writeText(text);
     },
+    datgui_add: function (property, p1, p2, p3) {
+        var ctrl = window.datgui.add(this, property, p1, p2, p3);
+        this.$watch(property, (v) => ctrl.setValue(v));
+    },
+    datgui_addColor: function (property) {
+        var ctrl = window.datgui.addColor(this, property);
+        this.$watch(property, (v) => ctrl.setValue(v));
+    },
 };
+
+const mixins_bootstrap = {
+    methods: methods_bootstrap
+}
