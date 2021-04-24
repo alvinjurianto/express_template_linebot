@@ -64,6 +64,9 @@ function do_post(url, body) {
     if (!response.ok)
       throw 'status is not 200';
     return response.json();
+//    return response.text();
+//    return response.blob();
+//    return response.arrayBuffer();
   });
 }
 
@@ -80,6 +83,9 @@ function do_post_urlencoded(url, params) {
     if (!response.ok)
       throw 'status is not 200';
     return response.json();
+//    return response.text();
+//    return response.blob();
+//    return response.arrayBuffer();
   })
 }
 
@@ -94,6 +100,9 @@ function do_post_formdata(url, params) {
     if (!response.ok)
       throw 'status is not 200';
     return response.json();
+//    return response.text();
+//    return response.blob();
+//    return response.arrayBuffer();
   });
 }
 
@@ -107,5 +116,8 @@ function do_get(url, qs) {
     if (!response.ok)
       throw 'status is not 200';
     return response.json();
+//    return response.text();
+//    return response.blob();
+//    return response.arrayBuffer();
   });
 }
