@@ -6,6 +6,8 @@ info:
 paths:
   /graphql:
     get:
+      produces:
+        - text/html
       responses:
         200:
           description: Success
