@@ -39,7 +39,7 @@ function parse_graphql() {
 
       let resolvers = {};
       let num_of_resolve = 0;
-      let endpoint = "/graphql_" + folder; // default endpoint
+      let endpoint = "/" + folder; // default endpoint
       gqldoc.definitions.forEach(element1 =>{
         if( element1.kind == 'SchemaDefinition'){
           // endpoint(Schema部)の解析
