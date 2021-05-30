@@ -16,11 +16,12 @@ var vue_options = {
     },
     mounted: function(){
         proc_load();
+
     }
 };
 vue_add_data(vue_options, { progress_title: '' }); // for progress-dialog
 vue_add_global_components(components_bootstrap);
 
 /* add additional components */
-  
+
 window.vue = new Vue( vue_options );

@@ -1,30 +1,15 @@
 const methods_bootstrap = {
     dialog_open: function(target, backdrop = 'static'){
-        const element = document.querySelector(target);
-        let modal = bootstrap.Modal.getInstance(element);
-        if( !modal )
-            modal = new bootstrap.Modal(element, { backdrop: backdrop, keyboard: false });
-        modal.show();
+        $(target).modal({backdrop: backdrop, keyboard: false});
     },
     dialog_close: function(target){
-        const element = document.querySelector(target);
-        let modal = bootstrap.Modal.getInstance(element);
-        if( modal )
-            modal.hide();
+        $(target).modal('hide');
     },
     panel_open: function(target){
-        var element = document.querySelector(target);
-        var collapse = bootstrap.Collapse.getInstance(element);
-        if( !collapse )
-            collapse = new bootstrap.Collapse(element, { toggle: false });
-        collapse.show();
+        $(target).collapse("show");
     },
     panel_close: function(target){
-        var element = document.querySelector(target);
-        var collapse = bootstrap.Collapse.getInstance(element);
-        if( !collapse )
-            collapse = new bootstrap.Collapse(element, { toggle: false });
-        collapse.hide();
+        $(target).collapse("hide");
     },
     progress_open: function(title = '少々お待ちください。', backdrop){
         this.$root.progress_title = title;
@@ -34,19 +19,10 @@ const methods_bootstrap = {
         this.dialog_close('#progress');
     },
     tab_select: function(target){
-        var element = document.querySelector("a[href='" + target + "']");
-        var tab = bootstrap.Tab.getInstance(element);
-        if( !tab )
-            tab = new bootstrap.Tab(element);
-        tab.show();
+        $("a[href='" + target + "']").tab("show").show();
     },
-    toast_show: function(message, level = "success"){
-        if( level == 'message' )
-            siiimpleToast.message(message, { position: 'top|right' });
-        else if( level == 'alert' )
-            siiimpleToast.alert(message, { position: 'top|right' });
-        else
-            siiimpleToast.success(message, { position: 'top|right' });
+    toast_show: function(message, title, level = "info", option){
+        toastr[level](message, title, option);
     },
     clip_paste: async function(){
     	return navigator.clipboard.readText();
