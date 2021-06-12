@@ -21,6 +21,7 @@ var vue_options = {
 };
 vue_add_data(vue_options, { progress_title: '' }); // for progress-dialog
 vue_add_global_components(components_bootstrap);
+vue_add_global_components(components_utils);
 
 /* add additional components */
 
