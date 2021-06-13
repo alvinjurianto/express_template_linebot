@@ -15,14 +15,18 @@ class AlexaUtils{
     }
 
     intent( matcher, handle ){
-        this.skillBuilder.addRequestHandlers(new BaseIntentHandler(matcher, handle));
+        this.skillBuilder.addRequestHandlers(new BaseIntentHandler(matcher, null, handle));
+    }
+
+    userEvent(matcher, handle) {
+        this.skillBuilder.addRequestHandlers(new BaseIntentHandler("UserEvent", matcher, handle));
     }
 
     customReceived( handle ){
-        this.skillBuilder.addRequestHandlers(new BaseIntentHandler("CustomInterfaceController.EventsReceived", handle));
+        this.skillBuilder.addRequestHandlers(new BaseIntentHandler("CustomInterfaceController.EventsReceived", null, handle));
     }
     customExpired( handle ){
-        this.skillBuilder.addRequestHandlers(new BaseIntentHandler("CustomInterfaceController.Expired", handle));
+        this.skillBuilder.addRequestHandlers(new BaseIntentHandler("CustomInterfaceController.Expired", null, handle));
     }
 
     errorIntent( handle ){
@@ -111,6 +115,22 @@ class AlexaUtils{
         };
     }
 
+    buildRenderDocumentDirective(token, document){
+        return {
+            type: 'Alexa.Presentation.APL.RenderDocument',
+            token: token,
+            document: document
+        };
+    }
+
+    buildExecuteCommandsDirective(token, commands){
+        return {
+            type: 'Alexa.Presentation.APL.ExecuteCommands',
+            token: token,
+            commands: commands
+        };
+    }
+
     lambda(){
         if( this.DynamoDBAdapter ){
             return this.skillBuilder
@@ -128,41 +148,45 @@ class AlexaUtils{
 };
 
 class BaseIntentHandler{
-    constructor(matcher, handle){
+    constructor(type, matcher, handle){
+        this.type = type;
         this.matcher = matcher;
         this.myhandle = handle;
     }
 
     canHandle(handlerInput) {
-        if( this.matcher == 'LaunchRequest'){
+        if (this.type == 'LaunchRequest'){
             return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
-        }else if( this.matcher == 'HelpIntent' ){
+        } else if (this.type == 'HelpIntent' ){
             return handlerInput.requestEnvelope.request.type === 'IntentRequest'
                 && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
-        }else if( this.matcher == 'CancelIntent' ){
+        } else if (this.type == 'CancelIntent' ){
             return handlerInput.requestEnvelope.request.type === 'IntentRequest'
                 && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.CancelIntent';            
-        }else if( this.matcher == 'StopIntent'){
+        } else if (this.type == 'StopIntent'){
             return handlerInput.requestEnvelope.request.type === 'IntentRequest'
                 && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent';
-        }else if( this.matcher == 'SessionEndedRequest'){
+        } else if (this.type == 'SessionEndedRequest') {
             return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
-        }else if( this.matcher == 'NavigateHomeIntent'){
+        } else if (this.type == 'NavigateHomeIntent'){
             return handlerInput.requestEnvelope.request.type === 'IntentRequest'
                 && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.NavigateHomeIntent';
-        }else if( this.matcher == 'CustomInterfaceController.EventsReceived' ){
+        } else if (this.type == 'CustomInterfaceController.EventsReceived' ){
             return handlerInput.requestEnvelope.request.type === 'CustomInterfaceController.EventsReceived';
-        }else if( this.matcher == 'CustomInterfaceController.Expired' ){
+        } else if (this.type == 'CustomInterfaceController.Expired' ){
             return handlerInput.requestEnvelope.request.type === 'CustomInterfaceController.Expired';
+        } else if (this.type == 'UserEvent') {
+            return handlerInput.requestEnvelope.request.type === 'Alexa.Presentation.APL.UserEvent'
+                && handlerInput.requestEnvelope.request.source.id === this.matcher;
         }else{
             return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-                && handlerInput.requestEnvelope.request.intent.name === this.matcher;
+                && handlerInput.requestEnvelope.request.intent.name === this.type;
         }
     }
 
     async handle(handlerInput) {
-        console.log('handle: ' + this.matcher + ' called');
-        console.log(handlerInput);
+        console.log('handle: ' + this.type + '.' + this.matcher + ' called');
+//        console.log(handlerInput);
         try{
             return await this.myhandle(handlerInput);
         }catch(error){
