@@ -73,6 +73,10 @@ class AlexaUtils{
             return response.endpoints;
         });
     }
+
+    getUserEventRequest(handlerInput){
+        return handlerInput.requestEnvelope.request;
+    }
     
     buildCustomDirective(endpointId, namespace, name, payload) {
         return {
@@ -115,11 +119,12 @@ class AlexaUtils{
         };
     }
 
-    buildRenderDocumentDirective(token, document){
+    buildRenderDocumentDirective(token, document, datasources){
         return {
             type: 'Alexa.Presentation.APL.RenderDocument',
             token: token,
-            document: document
+            document: document,
+            datasources: datasources
         };
     }
 
