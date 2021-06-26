@@ -85,6 +85,9 @@ const methods_bootstrap = {
                 return parseInt(h, 16);
             });
         }
+    },
+    make_random: function(max) {
+        return Math.floor(Math.random() * (max + 1));
     }
 };
 
