@@ -31,11 +31,14 @@ app.use(session({
 
 process.env.THIS_BASE_PATH = __dirname;
 console.log('THIS_BASE_PATH: ' + process.env.THIS_BASE_PATH);
+
+// swagger.yamlの検索
 const routing = require(process.env.THIS_BASE_PATH + '/api/controllers/routing');
 
 const BASE_PATH = process.env.BASE_PATH || '/';
 app.use(BASE_PATH, routing);
 
+// graphql.schemaの検索
 const schema_list = require(process.env.THIS_BASE_PATH + '/api/controllers/routing_graphql');
 schema_list.forEach( element => {
   app.use(element.endpoint, graphqlHTTP({
@@ -44,6 +47,9 @@ schema_list.forEach( element => {
   }));
   console.log(element.endpoint + " graphql handler");
 });
+
+// mqtt.jsonの検索
+require(process.env.THIS_BASE_PATH + '/api/controllers/routing_mqtt');
 
 app.all('*', function(req, res) {
 //  console.log(req);
