@@ -16,7 +16,7 @@ let mqtt_client;
 function parse_mqtt() {
   if( MQTT_BROKER_URL ){
     let topic_list = [];
-    mqtt_client = mqtt.connect(broker);
+    mqtt_client = mqtt.connect(MQTT_BROKER_URL);
     mqtt_client.on('connect', () =>{
       // mqtt.jsonの検索
       const folders = fs.readdirSync(CONTROLLERS_BASE);
