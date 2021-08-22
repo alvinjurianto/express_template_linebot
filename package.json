@@ -2,7 +2,7 @@
   "name": "express_template",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "swagger": "node generate_swagger.js"
