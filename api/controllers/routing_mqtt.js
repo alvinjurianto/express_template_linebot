@@ -41,12 +41,15 @@ function parse_mqtt() {
 
         const defs = JSON.parse(fs.readFileSync(fname).toString());
         defs.forEach(item =>{
-          // topicの検索
-          if( !item.topic )
-            return;
-
           const handler = item.handler || DEFAULT_HANDLER;
           const proc = require('./' + folder)[handler];
+
+          // topicの検索
+          if( !item.topic ){
+            const context = { mqtt: mqtt_client };
+            proc(null, context);
+            return;
+          }
 
           topic_list.push({
             topic: item.topic,
