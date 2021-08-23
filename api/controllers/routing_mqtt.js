@@ -46,6 +46,7 @@ function parse_mqtt() {
 
           // topicの検索
           if( !item.topic ){
+            // for startup
             const context = { mqtt: mqtt_client };
             proc(null, context);
             return;
