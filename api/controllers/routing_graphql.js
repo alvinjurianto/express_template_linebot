@@ -64,7 +64,7 @@ function parse_graphql() {
         // handler(Object部)の解析
         let object_handler = {
           handler: DEFAULT_HANDLER,
-          type: "normal"
+          type: "lambda"
         };
         const h1 = element1.directives.find(item => item.name.value == 'handler');
         if( h1 ){
@@ -118,14 +118,13 @@ function routing(type, handler, parent, args, context, info){
   console.log('[' + info.path.typename + '.' + info.path.key + ' calling]');
 
   try{
-    var task = null;
-    var func_response, func_error;
+    let task = null;
+    let func_response, func_error;
   
-    if( type == "normal" ){
+    if( type == "express" ){
       task = handler(parent, args, context, info);
-    }else
-    if( type == "lambda" ){
-      var lambda_event = {
+    }else{
+      const lambda_event = {
         arguments: args,
         request: {
           headers: context.headers
