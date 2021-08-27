@@ -70,7 +70,7 @@ exports.handler = async (event, context, callback) => {
 
         const defs = JSON.parse(fs.readFileSync(fname).toString());
         const item = {
-          folder: folder,
+          operationId: folder,
           schedule: defs.schedule,
           handler: defs.handler ? defs.handler : DEFAULT_HANDLER,
           enable: defs.enable ? true : false
@@ -103,7 +103,7 @@ exports.handler = async (event, context, callback) => {
 
         const defs = JSON.parse(fs.readFileSync(fname).toString());
         const item = {
-          folder: folder,
+          operationId: folder,
           topic: defs.topic,
           handler: defs.handler ? defs.handler : DEFAULT_HANDLER,
           enable: defs.enable ? true : false
@@ -159,7 +159,7 @@ exports.handler = async (event, context, callback) => {
         });
 
         graphql_list.push({
-          folder: folder,
+          operationId: folder,
           endpoint: endpoint
         });
       } catch (error) {
@@ -169,7 +169,7 @@ exports.handler = async (event, context, callback) => {
 
     let html = "<h1>graphql explorer</h1>";
     graphql_list.map(item => {
-      html += `<a href='..${item.endpoint}'>${item.folder}</a><br>`;
+      html += `<a href='..${item.endpoint}'>${item.operationId}</a><br>`;
     });
     return new TextResponse("text/html", html);
   }
