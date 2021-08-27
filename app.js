@@ -15,8 +15,8 @@ const app = express();
 
 //app.use(logger('tiny', { stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }) }));
 app.use(logger('dev')); // for development
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static( path.join(__dirname, 'public')));
 app.use(cors());
