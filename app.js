@@ -62,7 +62,7 @@ app.all('*', function(req, res) {
   res.sendStatus(404);
 });
 
-var port = Number(process.env.PORT) || 10080;
+var port = Number(process.env.PORT) || 20080;
 app.listen(port, () =>{
   console.log('http PORT=' + port)
 })
@@ -74,7 +74,7 @@ try{
     cert: fs.readFileSync('./cert/cert.pem'),
     ca: fs.readFileSync('./cert/chain.pem')
   };
-  const sport = Number(process.env.SPORT) || 10443;
+  const sport = Number(process.env.SPORT) || 20443;
   const servers = https.createServer(options, app);
   console.log('https PORT=' + sport );
   servers.listen(sport);
