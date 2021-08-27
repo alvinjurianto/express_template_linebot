@@ -51,6 +51,9 @@ schema_list.forEach( element => {
 // mqtt.jsonの検索
 require(process.env.THIS_BASE_PATH + '/api/controllers/routing_mqtt');
 
+// cronの検索
+require(process.env.THIS_BASE_PATH + '/api/controllers/routing_cron');
+
 app.all('*', function(req, res) {
 //  console.log(req);
   console.log('Unknown Endpoint');
