@@ -244,6 +244,10 @@ function routing(req, res) {
   try{
       let event;
       const func = req.postprocess;
+      if( res.func_type == 'express'){
+        func(req, res);
+        return;
+      }else
       if( res.func_type == 'normal' ){
           event = {
               headers: req.headers,
