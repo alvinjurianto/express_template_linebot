@@ -2,6 +2,10 @@ textarea {
   resize: vertical;
 }
 
+[v-cloak] {
+  display: none;
+}
+
 #loader-background {
   background: #fff;
   height: 100%;
