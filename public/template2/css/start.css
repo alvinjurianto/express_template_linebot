@@ -2,6 +2,10 @@ textarea {
   resize: vertical;
 }
 
+[v-cloak] {
+  display: none;
+}
+
 label.title {
   font-weight: bold;
 }
