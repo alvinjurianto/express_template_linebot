@@ -36,6 +36,7 @@ function parse_cron() {
       const proc = require('./' + folder)[handler];
 
       cron.schedule(defs.schedule, () => proc(defs.param));
+      console.log(defs.schedule + " cron " + folder + ' ' + handler);
     } catch (error) {
       console.log(error);
     }
