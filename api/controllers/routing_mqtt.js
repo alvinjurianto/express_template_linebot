@@ -40,10 +40,11 @@ function parse_mqtt() {
           return;
 
         const defs = JSON.parse(fs.readFileSync(fname).toString());
-        if (!defs.enable)
-          return;
 
         defs.forEach(item =>{
+          if (!item.enable)
+            return;
+
           const handler = item.handler || DEFAULT_HANDLER;
           const proc = require('./' + folder)[handler];
 
