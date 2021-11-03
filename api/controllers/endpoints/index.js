@@ -12,7 +12,7 @@ const swagger_utils = require(HELPER_BASE + 'swagger_utils');
 const { parse } = require('graphql');
 const fs = require('fs');
 
-const SWAGGER_FILE = THIS_BASE_PATH + "/api/swagger/swagger.yaml";
+const SWAGGER_DEFAULT_BASE = THIS_BASE_PATH + '/api/swagger/';
 const CONTROLLERS_BASE = THIS_BASE_PATH + '/api/controllers/';
 const CRON_TARGET_FNAME = "cron.json";
 const MQTT_TARGET_FNAME = "mqtt.json";
@@ -21,11 +21,11 @@ const GRAPHQL_TARGET_FNAME = "schema.graphql";
 
 exports.handler = async (event, context, callback) => {
   if( event.path == '/swagger'){
-    const root_file = fs.readFileSync(SWAGGER_FILE, 'utf-8');
+    const root_file = fs.readFileSync(SWAGGER_DEFAULT_BASE + SWAGGER_TARGET_FNAME, 'utf-8');
     const root = swagger_utils.parse_document(root_file);
 
     root.contents.set("host", event.headers.host);
-    root.contents.set("basePath", event.stage);
+//    root.contents.set("basePath", event.stage);
 
     swagger_utils.delete_paths(root);
     swagger_utils.delete_definitions(root);
