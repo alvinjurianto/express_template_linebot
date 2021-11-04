@@ -14,16 +14,17 @@ const yaml = require('yaml');
 const multer = require('multer');
 const jwt_decode = require('jwt-decode');
 
-let swagger_basePath = '';
+let swagger_basePath = '/';
 
 const fname = SWAGGER_DEFAULT_BASE + TARGET_FNAME;
+
 if( fs.existsSync(fname) ){
   const stats_file = fs.statSync(fname);
   if( stats_file.isFile() ){
     try{
       const swagger = yaml.parseDocument(fs.readFileSync(fname, 'utf-8'));
       const base_path = swagger.get('basePath');
-      if( base_path && base_path != '/' )
+      if( base_path )
         swagger_basePath = base_path;
 
       // paths配下のみ参照
@@ -33,94 +34,29 @@ if( fs.existsSync(fname) ){
           if( docMethod.key.value != 'get' && docMethod.key.value != 'post' && docMethod.key.value != 'head' )
             return;
 
-          // デフォルト値
-          const options = {
-            operationId: null,
-            func_type: 'normal',
-            content_type: 'application/json',
-            files: []
-          };
-  
-          // オプションタグ: operationId
-          // operationId: 任意
-          const docOperationId = docMethod.value.items.filter(item => item.key.value == 'operationId' );
-          if( docOperationId.length != 1 )
+          let options = parse_swagger_method(docMethod);
+          if( options.operationId )
             throw "operationId is not defined";
-          options.operationId = docOperationId[0].value.value;
-  
-          // オプションタグ: x-hanndler
-          // x-hanndler: 任意
-          const docHandler = docMethod.value.items.filter(item => item.key.value == 'x-handler' );
-          let handler = 'handler';
-          if( docHandler.length == 1 )
-            handler = docHandler[0].value.value;
-  
-          // オプションタグ: security
-          // security:
-          // - basicAuth: []
-          // - tokenAuth: []
-          // - apikeyAuth: []
-          // - jwtAuth: []
-          const docSecurity = docMethod.value.items.filter(item => item.key.value == 'security' );
-          if( docSecurity.length == 1 && docSecurity[0].value.items.length == 1 && docSecurity[0].value.items[0].items.length == 1)
-            options.security = docSecurity[0].value.items[0].items[0].key.value;
-  
-          // オプションタグ: x-functype
-          // x-functype: (express|empty|normal|alexa|lambda)
-          const docFuncType = docMethod.value.items.filter(item => item.key.value == 'x-functype' );
-          if( docFuncType.length == 1 )
-            options.func_type = docFuncType[0].value.value;
-    
-          // オプションタグ: consumes
-          const docConsumes = docMethod.value.items.filter(item => item.key.value == 'consumes' );
-          if( docConsumes.length == 1 && docConsumes[0].value.items.length == 1)
-            options.content_type = docConsumes[0].value.items[0].value;
-  
-          // file(multipart/form-data)の処理
-          // parameters:
-          // - in: formData
-          //   type: file
-          //   name: 任意
-          if( options.content_type == 'multipart/form-data'){
-            const parameters = docMethod.value.items.filter(item => item.key.value == 'parameters' );
-            parameters.forEach(parameter => {
-              parameter.value.items.forEach( item2 => {
-                const item_in = item2.items.filter(item => item.key.value == 'in' && item.value.value == 'formData');
-                if( item_in.length != 1 )
-                  return;
-                const item_type = item2.items.filter(item => item.key.value == 'type' && item.value.value == 'file');
-                if( item_type.length != 1 )
-                  return;
-                const item_name = item2.items.filter(item => item.key.value == 'name');
-                if( item_name.length != 1 )
-                  return;
-  
-                options.files.push({ name: item_name[0].value.value } );
-              });
-            });
-          }
-  
-          // path、methodの取得
+
           const path = (!swagger_basePath || swagger_basePath == '/') ? docPath.key.value : swagger_basePath + docPath.key.value;
-          const method = docMethod.key.value;
-          console.log(path, method, handler, JSON.stringify(options));
-          
+          console.log(path, options.method, options.handler, JSON.stringify(options));
+
           let postprocess;
           let nextfunc;
           if( options.func_type == "express"){
             // x-functype: express の場合
-            nextfunc = require(CONTROLLERS_BASE + options.operationId)[handler];
+            nextfunc = require(CONTROLLERS_BASE + options.operationId)[options.handler];
           }else
           if( options.func_type == 'empty' ){
             // x-functype: empty の場合
             nextfunc = (req, res) => res.json({});
           }else{
             // x-functype: normal|alexa|lambda の場合
-            postprocess = require(CONTROLLERS_BASE + options.operationId)[handler];
+            postprocess = require(CONTROLLERS_BASE + options.operationId)[options.handler];
             nextfunc = routing;
           }
   
-          switch(method){
+          switch(options.method){
             case 'get': {
               router.get(path, preprocess(options, postprocess), nextfunc);
               break;
@@ -163,106 +99,45 @@ folders.forEach(folder => {
     const paths = swagger.get('paths');
     paths.items.forEach(docPath =>{
       docPath.value.items.forEach(docMethod =>{
-        // デフォルト値
-        const options = {
-          operationId : folder,
-          func_type: 'normal',
-          content_type: 'application/json',
-          files: []
-        };
+        if (docMethod.key.value != 'get' && docMethod.key.value != 'post' && docMethod.key.value != 'head')
+          return;
 
-        // オプションタグ: operationId
-        // operationId: 任意
-        const docOperationId = docMethod.value.items.filter(item => item.key.value == 'operationId' );
-        if( docOperationId.length == 1 )
-          options.operationId = docOperationId[0].value.value;
+        let options = parse_swagger_method(docMethod);
+        if (options.operationId)
+          options.operationId = folder;
 
-        // オプションタグ: x-hanndler
-        // x-hanndler: 任意
-        const docHandler = docMethod.value.items.filter(item => item.key.value == 'x-handler' );
-        let handler = 'handler';
-        if( docHandler.length == 1 )
-          handler = docHandler[0].value.value;
-
-        // オプションタグ: security
-        // security:
-        // - basicAuth: []
-        // - tokenAuth: []
-        // - apikeyAuth: []
-        // - jwtAuth: []
-        const docSecurity = docMethod.value.items.filter(item => item.key.value == 'security' );
-        if( docSecurity.length == 1 && docSecurity[0].value.items.length == 1 && docSecurity[0].value.items[0].items.length == 1)
-          options.security = docSecurity[0].value.items[0].items[0].key.value;
-
-        // オプションタグ: x-functype
-        // x-functype: (express|empty|normal|alexa|lambda)
-        const docFuncType = docMethod.value.items.filter(item => item.key.value == 'x-functype' );
-        if( docFuncType.length == 1 )
-          options.func_type = docFuncType[0].value.value;
-  
-        // オプションタグ: consumes
-        const docConsumes = docMethod.value.items.filter(item => item.key.value == 'consumes' );
-        if( docConsumes.length == 1 && docConsumes[0].value.items.length == 1)
-          options.content_type = docConsumes[0].value.items[0].value;
-
-        // file(multipart/form-data)の処理
-        // parameters:
-        // - in: formData
-        //   type: file
-        //   name: 任意
-        if( options.content_type == 'multipart/form-data'){
-          const parameters = docMethod.value.items.filter(item => item.key.value == 'parameters' );
-          parameters.forEach(parameter => {
-            parameter.value.items.forEach( item2 => {
-              const item_in = item2.items.filter(item => item.key.value == 'in' && item.value.value == 'formData');
-              if( item_in.length != 1 )
-                return;
-              const item_type = item2.items.filter(item => item.key.value == 'type' && item.value.value == 'file');
-              if( item_type.length != 1 )
-                return;
-              const item_name = item2.items.filter(item => item.key.value == 'name');
-              if( item_name.length != 1 )
-                return;
-
-              options.files.push({ name: item_name[0].value.value } );
-            });
-          });
-        }
-
-        // path、methodの取得
         const path = (!swagger_basePath || swagger_basePath == '/') ? docPath.key.value : swagger_basePath + docPath.key.value;
-        const method = docMethod.key.value;
-        console.log(path, method, handler, JSON.stringify(options));
-        
+        console.log(path, options.method, options.handler, JSON.stringify(options));
+
         let postprocess;
         let nextfunc;
         if( options.func_type == "express"){
           // x-functype: express の場合
-          nextfunc = require('./' + folder)[handler];
+          nextfunc = require('./' + folder)[options.handler];
         }else
         if( options.func_type == 'empty' ){
           // x-functype: empty の場合
           nextfunc = (req, res) => res.json({});
         }else{
           // x-functype: normal|alexa|lambda の場合
-          postprocess = require('./' + folder)[handler];
+          postprocess = require('./' + folder)[options.handler];
           nextfunc = routing;
         }
 
-          switch(method){
-            case 'get': {
+        switch (options.method){
+          case 'get': {
             router.get(path, preprocess(options, postprocess), nextfunc);
-              break;
-            }
-            case 'post': {
-            router.post(path, preprocess(options, postprocess), nextfunc);
-              break;
-            }
-            case 'head': {
-            router.head(path, preprocess(options, postprocess), nextfunc);
-              break;
-            }
+            break;
           }
+          case 'post': {
+            router.post(path, preprocess(options, postprocess), nextfunc);
+            break;
+          }
+          case 'head': {
+            router.head(path, preprocess(options, postprocess), nextfunc);
+            break;
+          }
+        }
       });
     });
   }catch(error){
@@ -270,6 +145,79 @@ folders.forEach(folder => {
     return;
   }
 });
+
+function parse_swagger_method(docMethod) {
+  // デフォルト値
+  const options = {
+    operationId: null,
+    func_type: 'normal',
+    content_type: 'application/json',
+    handler: 'handler',
+    files: []
+  };
+
+  // methodの取得
+  options.method = docMethod.key.value;
+
+  // オプションタグ: operationId
+  // operationId: 任意
+  const docOperationId = docMethod.value.items.filter(item => item.key.value == 'operationId');
+  if (docOperationId.length == 1)
+    options.operationId = docOperationId[0].value.value;
+
+  // オプションタグ: x-hanndler
+  // x-hanndler: 任意
+  const docHandler = docMethod.value.items.filter(item => item.key.value == 'x-handler');
+  if (docHandler.length == 1)
+    options.handler = docHandler[0].value.value;
+
+  // オプションタグ: security
+  // security:
+  // - basicAuth: []
+  // - tokenAuth: []
+  // - apikeyAuth: []
+  // - jwtAuth: []
+  const docSecurity = docMethod.value.items.filter(item => item.key.value == 'security');
+  if (docSecurity.length == 1 && docSecurity[0].value.items.length == 1 && docSecurity[0].value.items[0].items.length == 1)
+    options.security = docSecurity[0].value.items[0].items[0].key.value;
+
+  // オプションタグ: x-functype
+  // x-functype: (express|empty|normal|alexa|lambda)
+  const docFuncType = docMethod.value.items.filter(item => item.key.value == 'x-functype');
+  if (docFuncType.length == 1)
+    options.func_type = docFuncType[0].value.value;
+
+  // オプションタグ: consumes
+  const docConsumes = docMethod.value.items.filter(item => item.key.value == 'consumes');
+  if (docConsumes.length == 1 && docConsumes[0].value.items.length == 1)
+    options.content_type = docConsumes[0].value.items[0].value;
+
+  // file(multipart/form-data)の処理
+  // parameters:
+  // - in: formData
+  //   type: file
+  //   name: 任意
+  if (options.content_type == 'multipart/form-data') {
+    const parameters = docMethod.value.items.filter(item => item.key.value == 'parameters');
+    parameters.forEach(parameter => {
+      parameter.value.items.forEach(item2 => {
+        const item_in = item2.items.filter(item => item.key.value == 'in' && item.value.value == 'formData');
+        if (item_in.length != 1)
+          return;
+        const item_type = item2.items.filter(item => item.key.value == 'type' && item.value.value == 'file');
+        if (item_type.length != 1)
+          return;
+        const item_name = item2.items.filter(item => item.key.value == 'name');
+        if (item_name.length != 1)
+          return;
+
+        options.files.push({ name: item_name[0].value.value });
+      });
+    });
+  }
+
+  return options;
+}
 
 // x-functype: 前処理
 function preprocess(options, postprocess){
