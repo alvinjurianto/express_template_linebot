@@ -101,7 +101,7 @@ if( fs.existsSync(fname) ){
           }
   
           // path、methodの取得
-          const path = swagger_basePath + docPath.key.value;
+          const path = (!swagger_basePath || swagger_basePath == '/') ? docPath.key.value : swagger_basePath + docPath.key.value;
           const method = docMethod.key.value;
           console.log(path, method, handler, JSON.stringify(options));
           
@@ -230,7 +230,7 @@ folders.forEach(folder => {
         }
 
         // path、methodの取得
-        const path = swagger_basePath + docPath.key.value;
+        const path = (!swagger_basePath || swagger_basePath == '/') ? docPath.key.value : swagger_basePath + docPath.key.value;
         const method = docMethod.key.value;
         console.log(path, method, handler, JSON.stringify(options));
         
@@ -506,4 +506,7 @@ function return_response(res, ret){
     }
 }
 
-module.exports = router;
+module.exports = {
+  router: router,
+  basePath: swagger_basePath
+};
