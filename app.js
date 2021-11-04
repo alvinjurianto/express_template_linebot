@@ -33,7 +33,8 @@ console.log('THIS_BASE_PATH: ' + process.env.THIS_BASE_PATH);
 
 // swagger.yamlの検索
 const routing = require(process.env.THIS_BASE_PATH + '/api/controllers/routing');
-app.use('/', routing);
+app.use(routing.basePath, routing.router);
+console.log('BasePath: ' + routing.basePath);
 
 // graphql.schemaの検索
 const schema_list = require(process.env.THIS_BASE_PATH + '/api/controllers/routing_graphql');
