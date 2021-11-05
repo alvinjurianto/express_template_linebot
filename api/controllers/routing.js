@@ -38,7 +38,7 @@ if( fs.existsSync(fname) ){
           if( !options.operationId )
             throw "operationId is not defined";
 
-          const path = (!swagger_basePath || swagger_basePath == '/') ? docPath.key.value : swagger_basePath + docPath.key.value;
+          const path = docPath.key.value;
           console.log(path, options.method, options.handler, JSON.stringify(options));
 
           let postprocess;
@@ -106,7 +106,7 @@ folders.forEach(folder => {
         if (options.operationId)
           options.operationId = folder;
 
-        const path = (!swagger_basePath || swagger_basePath == '/') ? docPath.key.value : swagger_basePath + docPath.key.value;
+        const path = docPath.key.value;
         console.log(path, options.method, options.handler, JSON.stringify(options));
 
         let postprocess;
