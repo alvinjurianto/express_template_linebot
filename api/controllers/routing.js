@@ -35,7 +35,7 @@ if( fs.existsSync(fname) ){
             return;
 
           let options = parse_swagger_method(docMethod);
-          if( options.operationId )
+          if( !options.operationId )
             throw "operationId is not defined";
 
           const path = (!swagger_basePath || swagger_basePath == '/') ? docPath.key.value : swagger_basePath + docPath.key.value;
