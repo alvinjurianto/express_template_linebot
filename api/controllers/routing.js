@@ -103,7 +103,7 @@ folders.forEach(folder => {
           return;
 
         let options = parse_swagger_method(docMethod);
-        if (options.operationId)
+        if (!options.operationId)
           options.operationId = folder;
 
         const path = docPath.key.value;
