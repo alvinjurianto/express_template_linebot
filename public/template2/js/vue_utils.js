@@ -7,6 +7,8 @@ function proc_load() {
 }
 
 function parse_url_vars(param) {
+  if( param.startsWith('#') )
+  	param = param.substr(1);
   var searchParams = new URLSearchParams(param);
   var vars = {};
   for (let p of searchParams)
