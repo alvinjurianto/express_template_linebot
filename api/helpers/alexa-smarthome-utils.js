@@ -14,6 +14,8 @@ class AlexaSmartHomeUtils{
             var handler = this.intentHandles.get(intent);
             if( handler )
                 return handler(handlerInput, context);
+            else
+                console.log('not found intent: ' + intent);
         }
     }
 }
