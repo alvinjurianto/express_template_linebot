@@ -1,5 +1,7 @@
 'use strict';
 
+const MAX_DATA_SIZE = '1mb';
+
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
@@ -14,8 +16,8 @@ const app = express();
 
 //app.use(logger('tiny', { stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }) }));
 app.use(logger('dev')); // for development
-app.use(express.json());
-app.use(express.urlencoded({ limit: '1mb', extended: false }));
+app.use(express.json({limit: MAX_DATA_SIZE}));
+app.use(express.urlencoded({ limit: MAX_DATA_SIZE, extended: false }));
 app.use(cookieParser());
 app.use(express.static( path.join(__dirname, 'public')));
 app.use(cors());
