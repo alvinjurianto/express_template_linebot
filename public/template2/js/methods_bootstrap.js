@@ -77,6 +77,8 @@ const methods_bootstrap = {
     },
     hex2ba: function(hex, sep = '') {
         var hexs = hex.trim(hex);
+        if( !hexs )
+            return [];
         if (sep == '') {
             var array = [];
             for (var i = 0; i < hexs.length / 2; i++)
