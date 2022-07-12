@@ -51,6 +51,13 @@ app.message(async (event, client) => {
         },
       },
       {
+        title: "OpenInstaCard",
+        action: {
+          type: "postback",
+          data: "OpenInstaCard",
+        },
+      },
+      {
         title: "List",
         action: {
           type: "postback",
@@ -113,6 +120,21 @@ app.postback(async (event, client) => {
       "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
       "opening google card desu",
       "open google",
+      action
+    );
+    return client.replyMessage(event.replyToken, message);
+  } else if (event.postback.data == "LinkingCard") {
+    const action = {
+        type: "uri",
+        label: "URI",
+        uri: "http://instagram.com/_u/{alvinjurianto}/",
+      };
+    var message = app.createLinkingCard(
+      "Linking Card",
+      "linebot sample",
+      "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+      "opening instagram desu",
+      "open instagram",
       action
     );
     return client.replyMessage(event.replyToken, message);
