@@ -366,8 +366,14 @@ class LineUtils{
                     },
                     {
                         type: "text",
-                        text: text,
+                        text: 'press her to test function one',
                         size: "sm",
+                        wrap: true
+                    },
+                    {
+                        type: "text",
+                        text: 'extra line to help with explanation',
+                        size: "xs",
                         wrap: true
                     },
                     {
@@ -386,16 +392,6 @@ class LineUtils{
                         height: "sm",
                         action : this.makeAction(action_text, action)
                     },
-                    {
-                        type: "button",
-                        height: "sm",
-                        action : this.makeAction(action_text, action)
-                    },
-                    {
-                        type: "button",
-                        height: "sm",
-                        action : this.makeAction(action_text, action)
-                    }
                 ],
                 flex: 0
             }
