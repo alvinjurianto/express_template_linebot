@@ -94,7 +94,6 @@ app.message(async (event, client) => {
 
 app.postback(async (event, client) => {
   console.log('what the hell is this event?', event);
-
   if (event.postback.data == "SimpleResponse") {
     var message = app.createSimpleResponse("SimpleResponseです");
     return client.replyMessage(event.replyToken, message);
@@ -221,14 +220,14 @@ app.postback(async (event, client) => {
 
 app.accountLink(async (event, client) => {
     console.log('what the hell is this event? is it accountLINK????', event);
-    const line = require("@line/bot-sdk");
+    // const line = require("@line/bot-sdk");
 
-    const client = new line.Client({
-      channelAccessToken: config.channelAccessToken ,
-    });
+    // const client = new line.Client({
+    //   channelAccessToken: config.channelAccessToken ,
+    // });
 
-    const linkToken = await client.getLinkToken(event.source.userId);
-    console.log('link token result?', linkToken);
+    // const linkToken = await client.getLinkToken(event.source.userId);
+    // console.log('link token result?', linkToken);
     var message = { type: "text", text: 'well at least we sent this message' + " ですね" };
     return client.replyMessage(event.replyToken, message);
 })
