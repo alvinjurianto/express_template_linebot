@@ -369,13 +369,28 @@ class LineUtils{
                         text: text,
                         size: "sm",
                         wrap: true
-                    }
+                    },
+                    {
+                        type: "button",
+                        height: "sm",
+                        action : this.makeAction(action_text, action)
+                    },
                 ]
             },
             footer: {
                 type: "box",
                 layout: "vertical",
                 contents: [
+                    {
+                        type: "button",
+                        height: "sm",
+                        action : this.makeAction(action_text, action)
+                    },
+                    {
+                        type: "button",
+                        height: "sm",
+                        action : this.makeAction(action_text, action)
+                    },
                     {
                         type: "button",
                         height: "sm",
