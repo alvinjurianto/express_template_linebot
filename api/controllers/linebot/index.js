@@ -1,5 +1,4 @@
 "use strict";
-var request = require('request');
 
 const config = {
   channelAccessToken:
@@ -113,6 +112,7 @@ app.postback(async (event, client) => {
 
     const userId = event.source.userId
     // call webhook here
+    var request = require('request');
     async function updateClient(){
         var clientServerOptions = {
             uri: 'https://api.line.me/v2/bot/user/'+userId+'/linkToken',
