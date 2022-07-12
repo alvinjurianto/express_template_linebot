@@ -22,9 +22,43 @@ app.message(async (event, client) =>{
         // return the linkToken via message
         console.log('entered linkText')
     }
-  
-    var message = { type: 'text', text: event.message.text + ' ですね' };
-    return client.replyMessage(event.replyToken, message);
+
+    if( event.message.text == '/' ){
+        var message = app.createSimpleResponse(event.message.text);
+        var list = [
+            {
+                title: "SimpleResponse",
+                action: {
+                    type: "postback",
+                    data: "SimpleResponse"
+                }
+            },
+            {
+                title: "BasicCard",
+                action: {
+                    type: "postback",
+                    data: "BasicCard"
+                }
+            },
+            {
+                title: "List",
+                action: {
+                    type: "postback",
+                    data: "List"
+                }
+            },
+            {
+                title: "Carousel",
+                action: {
+                    type: "postback",
+                    data: "Carousel"
+                }
+            },
+        ]} else {
+            var message = { type: 'text', text: event.message.text + ' ですね' };
+            return client.replyMessage(event.replyToken, message);
+        }
+
   });
 
   exports.fulfillment = app.lambda();
