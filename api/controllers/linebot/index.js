@@ -93,7 +93,7 @@ app.message(async (event, client) => {
 });
 
 app.postback(async (event, client) => {
-  console.log(event);
+  console.log('what the hell is this event?', event);
 
   if (event.postback.data == "SimpleResponse") {
     var message = app.createSimpleResponse("SimpleResponseです");
