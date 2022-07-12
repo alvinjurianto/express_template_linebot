@@ -109,8 +109,6 @@ app.postback(async (event, client) => {
     return client.replyMessage(event.replyToken, message);
   } else if (event.postback.data == "LinkingCard") {
     // const linkToken = 'testtoken'
-
-
     const line = require("@line/bot-sdk");
 
     const client = new line.Client({
@@ -118,6 +116,7 @@ app.postback(async (event, client) => {
     });
 
     const linkToken = await client.getLinkToken(event.source.userId);
+    console.log('link token result', linkToken)
     // console.log('link token result?', linkToken);
     const action = {
         type: "accountLink",
@@ -129,9 +128,10 @@ app.postback(async (event, client) => {
         "linebot sample",
         "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
         "you have sucessfully started linking process",
-        `lets link at ${linkToken}`,
+        `lets link at pufufu`,
         action
       );
+      console.log('sending message');
     return client.replyMessage(event.replyToken, message);
   } else if (event.postback.data == "OpenInstaCard") {
     const action = {
