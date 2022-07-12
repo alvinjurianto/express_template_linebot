@@ -5,4 +5,6 @@ https://qiita.com/poruruba/items/aad6a181e8ef0d956e71<br>
 
 
 Alvin Jurianto Development Notes: 
-packages installed has some vulnerabilities, check later by running run npm audit 
+1. packages installed has some vulnerabilities, check later by running run npm audit 
+
+2. For now, let's just release the ENV from local to dev server in heroku.... 

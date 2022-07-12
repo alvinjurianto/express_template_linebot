@@ -4,7 +4,7 @@ npm-debug.log
 package-lock.json
 
 # Local development
-*.env
+# *.env
 *.dev
 .DS_Store
 
