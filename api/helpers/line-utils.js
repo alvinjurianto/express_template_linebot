@@ -67,6 +67,7 @@ class LineUtils{
             }
 
             var body = JSON.parse(event.body);
+            console.log('body??', body)
 
             return Promise.all(body.events.map((event) =>{
                 if( (event.type == 'message') &&
@@ -74,12 +75,14 @@ class LineUtils{
                     return;
                 
                 var handler = this.map.get(event.type);
-                if( handler )
+                if( handler ) {
+                    console.log('handler?', handler)
                     return handler(event, this.client);
+                }
                 else
                     console.log(event.type + ' is not defined.');
             }))
-            .then((result) =>{
+            .then((result) => {
                console.log('alvin here--', result);
 //                return new Response(result);
                 return new Response({});
