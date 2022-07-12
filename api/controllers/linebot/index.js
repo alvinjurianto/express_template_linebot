@@ -110,6 +110,7 @@ app.postback(async (event, client) => {
     return client.replyMessage(event.replyToken, message);
   } else if (event.postback.data == "LinkingCard") {
     console.log('event alvin', JSON.stringify(event))
+    console.log('useeeeeerID', event.source.userId)
     // call webhook here
     // async function updateClient(){
     //     var clientServerOptions = {
