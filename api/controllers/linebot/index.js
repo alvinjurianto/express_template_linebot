@@ -61,8 +61,8 @@ app.message(async (event, client) =>{
     } if (event.message.text == 'call Link') {
         const action = {
             type: "uri",
-            label: "uri uri uri uri uri",
-            uri: "https://google.com"
+            label: "URI",
+            uri: "https://www.google.com"
         }
         var message = app.makeAction(event.message.text, action);
         console.log('message??', message);
