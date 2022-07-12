@@ -59,6 +59,7 @@ app.message(async (event, client) =>{
         message.quickReply = quickReply;
         return client.replyMessage(event.replyToken, message);
     } if (event.message.text == 'call Link') {
+        console.log('entering call linkk!!!');
         const action = {
             type: "uri",
             label: "URI",
@@ -66,7 +67,7 @@ app.message(async (event, client) =>{
         }
         var message = app.makeAction(event.message.text, action);
         console.log('message??', message);
-        return client.replyMessage(event.replyToken, message);
+        return client.replyMessage(event.replyToken, action);
     } else {
             var message = { type: 'text', text: event.message.text + ' ですね' };
             return client.replyMessage(event.replyToken, message);
