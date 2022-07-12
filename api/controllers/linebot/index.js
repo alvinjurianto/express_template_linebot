@@ -127,7 +127,7 @@ app.postback(async (event, client) => {
     const action = {
         type: "uri",
         label: "URI",
-        uri: "http://instagram.com/_u/alvinjurianto/",
+        uri: "instagram://user?username=alvinjurianto",
       };
     var message = app.createLinkingCard(
       "Linking Card",
