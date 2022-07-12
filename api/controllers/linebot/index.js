@@ -109,13 +109,14 @@ app.postback(async (event, client) => {
     );
     return client.replyMessage(event.replyToken, message);
   } else if (event.postback.data == "LinkingCard") {
-    const line = require("@line/bot-sdk");
+    // const line = require("@line/bot-sdk");
 
-    const client = new line.Client({
-      channelAccessToken: config.channelAccessToken ,
-    });
+    // const client = new line.Client({
+    //   channelAccessToken: config.channelAccessToken ,
+    // });
 
-    const linkToken = await client.getLinkToken(event.source.userId);
+    // const linkToken = await client.getLinkToken(event.source.userId);
+    const linkToken = 'testtoken'
 
     const action = {
         type: "uri",
