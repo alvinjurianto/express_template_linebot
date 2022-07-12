@@ -109,19 +109,11 @@ app.postback(async (event, client) => {
     );
     return client.replyMessage(event.replyToken, message);
   } else if (event.postback.data == "LinkingCard") {
-    // const line = require("@line/bot-sdk");
-
-    // const client = new line.Client({
-    //   channelAccessToken: config.channelAccessToken ,
-    // });
-
-    // const linkToken = await client.getLinkToken(event.source.userId);
     const linkToken = 'testtoken'
 
     const action = {
-        type: "uri",
-        label: "URI",
-        uri: "https://www.google.com",
+        type: "accountLink",
+        label: "calling account link",
       };
 
       var message = app.createLinkingCard(
@@ -226,5 +218,19 @@ app.postback(async (event, client) => {
     return client.replyMessage(event.replyToken, message);
   }
 });
+
+app.accountLink(async (event, client) => {
+    console.log('what the hell is this event? is it accountLINK????', event);
+    const line = require("@line/bot-sdk");
+
+    const client = new line.Client({
+      channelAccessToken: config.channelAccessToken ,
+    });
+
+    const linkToken = await client.getLinkToken(event.source.userId);
+    console.log('link token result?', linkToken);
+    var message = { type: "text", text: 'well at least we sent this message' + " ですね" };
+    return client.replyMessage(event.replyToken, message);
+})
 
 exports.fulfillment = app.lambda();
