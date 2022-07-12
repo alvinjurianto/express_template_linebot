@@ -64,7 +64,8 @@ app.message(async (event, client) =>{
             label: "uri uri uri uri uri",
             uri: "https://google.com"
         }
-        var message = app.makeAction(event.message.text, action)
+        var message = app.makeAction(event.message.text, action);
+        console.log('message??', message);
         return client.replyMessage(event.replyToken, message);
     } else {
             var message = { type: 'text', text: event.message.text + ' ですね' };
