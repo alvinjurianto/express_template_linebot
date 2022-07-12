@@ -73,7 +73,7 @@ class LineUtils{
                 if( (event.type == 'message') &&
                      (event.replyToken === '00000000000000000000000000000000' || event.replyToken === 'ffffffffffffffffffffffffffffffff' ))
                     return;
-                
+                console.log('event type checkpoint', event.type)
                 var handler = this.map.get(event.type);
                 if( handler ) {
                     console.log('handler?', handler)

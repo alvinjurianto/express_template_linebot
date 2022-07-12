@@ -15,7 +15,6 @@ class Response{
 
     set_body(content){
         this.body = JSON.stringify(content);        
-        console.log('hotbody', this.body);
         return this;
     }
     
