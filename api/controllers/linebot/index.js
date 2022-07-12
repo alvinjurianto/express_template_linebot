@@ -74,4 +74,91 @@ app.message(async (event, client) =>{
 
   });
 
+app.postback(async (event, client) =>{
+    console.log(event);
+
+    if(event.postback.data == 'SimpleResponse' ){
+        var message = app.createSimpleResponse('SimpleResponseです');
+        return client.replyMessage(event.replyToken, message);
+    }else
+    if(event.postback.data == 'BasicCard' ){
+        var message = app.createBasicCard("BasicCard", "linebot sample", "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png", 
+                                                                            "BasicCardです", "ボタンテキスト", "ボタンを押下");
+        return client.replyMessage(event.replyToken, message);
+    }else
+    if(event.postback.data == 'List' ){
+        var list = [
+            {
+                title: "Brown Cafe",
+                desc: "Brown Cafeです",
+                image_url: "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip10.jpg",
+                action_text: "選択",
+                action: {
+                    type: "message",
+                    text: "Brown Cafeを選択"
+                }
+            },
+            {
+                title: "Brow&Cony's Restaurant",
+                desc: "Brow&Cony's Restaurantです",
+                image_url: "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip11.jpg",
+                action_text: "選択",
+                action: {
+                    type: "message",
+                    text: "Brow&Cony's Restaurantを選択"
+                }
+            },
+            {
+                title: "Tata",
+                desc: "Tataです",
+                image_url: "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip12.jpg",
+                action_text: "選択",
+                action: {
+                    type: "message",
+                    text: "Tataが選択されました"
+                }
+            },
+        ];
+        var message = app.createList("List", list);
+        return client.replyMessage(event.replyToken, message);
+    }else
+    if(event.postback.data == 'Carousel' ){
+        var list = [
+            {
+                title: "Brown Cafe",
+                desc: "Brown Cafeです",
+                image_url: "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip10.jpg",
+                action_text: "選択",
+                action: {
+                    type: "message",
+                    text: "Brown Cafeを選択"
+                }
+            },
+            {
+                title: "Brow&Cony's Restaurant",
+                desc: "Brow&Cony's Restaurantです",
+                image_url: "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip11.jpg",
+                action_text: "選択",
+                action: {
+                    type: "message",
+                    text: "Brow&Cony's Restaurantを選択"
+                }
+            },
+            {
+                title: "Tata",
+                desc: "Tataです",
+                image_url: "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip12.jpg",
+                action_text: "選択",
+                action: {
+                    type: "message",
+                    text: "Tataが選択されました"
+                }
+            },
+        ];
+        var message = app.createCarousel('Carousel', list);
+        return client.replyMessage(event.replyToken, message);
+    }
+
+});
+
   exports.fulfillment = app.lambda();
