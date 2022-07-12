@@ -109,19 +109,21 @@ app.postback(async (event, client) => {
     );
     return client.replyMessage(event.replyToken, message);
   } else if (event.postback.data == "LinkingCard") {
-    // const action = {
+    const line = require("@line/bot-sdk");
 
-    // }
-    console.log('this is running pressed')
-    var message = { type: "accountLink", text: "yahoooo" + " ですね linking" };
+    const client = new line.Client({
+      channelAccessToken: config.channelAccessToken ,
+    });
+
+    const linkToken = await client.getLinkToken(event.source.userId);
+    var message = { type: "message", text: `linkToken get! ${linkToken}` + " ですね linking" };
     return client.replyMessage(event.replyToken, message);
-
   } else if (event.postback.data == "OpenInstaCard") {
     const action = {
-        type: "uri",
-        label: "URI",
-        uri: "instagram://user?username=alvinjurianto",
-      };
+      type: "uri",
+      label: "URI",
+      uri: "instagram://user?username=alvinjurianto",
+    };
     var message = app.createLinkingCard(
       "Linking Card",
       "linebot sample",
