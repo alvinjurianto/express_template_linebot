@@ -108,7 +108,7 @@ app.postback(async (event, client) => {
     );
     return client.replyMessage(event.replyToken, message);
   } else if (event.postback.data == "LinkingCard") {
-    const linkToken = 'testtoken'
+    // const linkToken = 'testtoken'
 
 
     const line = require("@line/bot-sdk");
@@ -117,7 +117,7 @@ app.postback(async (event, client) => {
       channelAccessToken: config.channelAccessToken ,
     });
 
-    // const linkToken = await client.getLinkToken(event.source.userId);
+    const linkToken = await client.getLinkToken(event.source.userId);
     // console.log('link token result?', linkToken);
     const action = {
         type: "accountLink",
