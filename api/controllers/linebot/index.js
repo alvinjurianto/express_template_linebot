@@ -44,6 +44,13 @@ app.message(async (event, client) => {
         },
       },
       {
+        title: "Linking Card",
+        action: {
+          type: "postback",
+          data: "LinkingCard",
+        },
+      },
+      {
         title: "List",
         action: {
           type: "postback",
