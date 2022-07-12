@@ -325,6 +325,67 @@ class LineUtils{
         return this.wrapFlexMessage(title, contents);
     }
 
+    createLinkingCard(title, sub_title, image_url, text, action_text, action ){
+        var contents = {
+            type: "bubble",
+            hero: {
+                type: "image",
+                url: image_url,
+                size: "full",
+                aspectRatio: "20:13",
+            },
+            body: {
+                type: "box",
+                layout: "vertical",
+                contents: [
+                    {
+                        type: "box",
+                        layout: "vertical",
+                        contents: [
+                            {
+                                type: "text",
+                                text: title,
+                                weight: "bold",
+                                size: "md"
+                            },
+                            {
+                                type: "text",
+                                text: sub_title,
+                                color: "#aaaaaa",
+                                size: "xs",
+                                wrap: true
+                            },
+                            {
+                                type: "spacer",
+                                size: "sm"
+                            }
+                        ]
+                    },
+                    {
+                        type: "text",
+                        text: text,
+                        size: "sm",
+                        wrap: true
+                    }
+                ]
+            },
+            footer: {
+                type: "box",
+                layout: "vertical",
+                contents: [
+                    {
+                        type: "button",
+                        height: "sm",
+                        action : this.makeAction(action_text, action)
+                    }
+                ],
+                flex: 0
+            }
+        };
+    
+        return this.wrapFlexMessage(title, contents);
+    }
+
     createSimpleCard(title, sub_title, text, action_text, action ){
         var contents = {
                 type: "bubble",
