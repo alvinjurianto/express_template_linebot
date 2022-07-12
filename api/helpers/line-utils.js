@@ -58,7 +58,6 @@ class LineUtils{
 
     lambda(){
         return async (event, context, callback) => {
-            console.log('alvin wants to log this event', JSON.stringify(event))
 //            console.log(context.req);
 
             const signature = crypto.createHmac('SHA256', this.secret).update(event.body).digest('base64');
