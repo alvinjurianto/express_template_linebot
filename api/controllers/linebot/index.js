@@ -118,9 +118,25 @@ app.postback(async (event, client) => {
     const linkToken = await client.getLinkToken(event.source.userId);
     console.log('link token result', linkToken)
     // console.log('link token result?', linkToken);
+
+    // "messages"= [{
+    //     "type": "template",
+    //     "altText": "Account Link",
+    //     "template": {
+    //         "type": "buttons",
+    //         "text": "Account Link",
+    //         "actions": [{
+    //             "type": "uri",
+    //             "label": "Account Link",
+    //             "uri": "http://example.com/link?linkToken=xxx"
+    //         }]
+    //     }
+    // }]
+    
     const action = {
-        type: "accountLink",
-        label: "calling accountlink",
+        type: "uri",
+        label: "Account Link",
+        uri: "https://nnlife-jp--irisdev04.my.salesforce.com/"
       };
 
       var message = app.createLinkingCard(
@@ -128,7 +144,7 @@ app.postback(async (event, client) => {
         "linebot sample",
         "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
         "you have sucessfully started linking process",
-        `lets link at pufufu`,
+        `LOGIN to SALESFORCE`,
         action
       );
       console.log('sending message');
