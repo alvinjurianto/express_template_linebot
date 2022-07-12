@@ -44,7 +44,7 @@ app.message(async (event, client) => {
         },
       },
       {
-        title: "Linking Card",
+        title: "LinkingCard",
         action: {
           type: "postback",
           data: "LinkingCard",
@@ -91,7 +91,7 @@ app.postback(async (event, client) => {
   if (event.postback.data == "SimpleResponse") {
     var message = app.createSimpleResponse("SimpleResponseです");
     return client.replyMessage(event.replyToken, message);
-  } else if (event.postback.data == "LinkingCard") {
+  } else if (event.postback.data == "BasicCard") {
     var message = app.createBasicCard(
       "BasicCard",
       "linebot sample",
@@ -101,7 +101,7 @@ app.postback(async (event, client) => {
       "ボタンを押下"
     );
     return client.replyMessage(event.replyToken, message);
-  } else if (event.postback.data == "BasicCard") {
+  } else if (event.postback.data == "LinkingCard") {
     const action = {
         type: "uri",
         label: "URI",
