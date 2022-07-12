@@ -109,20 +109,37 @@ app.postback(async (event, client) => {
     );
     return client.replyMessage(event.replyToken, message);
   } else if (event.postback.data == "LinkingCard") {
-    const action = {
-        type: "uri",
-        label: "URI",
-        uri: "https://www.google.com",
-      };
-    var message = app.createLinkingCard(
-      "Linking Card",
-      "linebot sample",
-      "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
-      "opening google card desu",
-      "open google",
-      action
-    );
+    console.log('event alvin', JSON.stringify(event))
+    // call webhook here
+    // async function updateClient(){
+    //     var clientServerOptions = {
+    //         uri: 'https://api.line.me/v2/bot/user/'+userId+'/linkToken',
+    //         method: 'POST',
+    //         headers: {
+    //             'Authorization': config.channelAccessToken
+    //         }
+    //     }
+    //     request(clientServerOptions, function (error, response) {
+    //         console.log('check thee result here!!', error,response.body);
+    //         return;
+    //     });
+    // }
+    // await updateClient();
+    // const action = {
+    //     type: "uri",
+    //     label: "URI",
+    //     uri: "https://www.google.com",
+    //   };
+    // var message = app.createLinkingCard(
+    //   "Linking Card",
+    //   "linebot sample",
+    //   "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+    //   "opening google card desu",
+    //   "open google",
+    //   action
+    // );
     return client.replyMessage(event.replyToken, message);
+
   } else if (event.postback.data == "OpenInstaCard") {
     const action = {
         type: "uri",

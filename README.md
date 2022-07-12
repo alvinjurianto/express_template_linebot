@@ -11,3 +11,7 @@ Alvin Jurianto Development Notes:
 
 3. opening app using custom urls:
 https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app
+
+4. UI modules to be confirmed
+-[] accessing external app from card
+does not accept external URL scheme so have to make a https link that redirects there I assume
