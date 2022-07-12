@@ -116,7 +116,21 @@ app.postback(async (event, client) => {
     });
 
     const linkToken = await client.getLinkToken(event.source.userId);
-    var message = { type: "message", text: `linkToken get! ${linkToken}` + " ですね linking" };
+
+    const action = {
+        type: "uri",
+        label: "URI",
+        uri: "https://www.google.com",
+      };
+
+      var message = app.createLinkingCard(
+        "Linking Card",
+        "linebot sample",
+        "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+        "you have sucessfully started linking process",
+        `lets link at ${linkToken}`,
+        action
+      );
     return client.replyMessage(event.replyToken, message);
   } else if (event.postback.data == "OpenInstaCard") {
     const action = {
