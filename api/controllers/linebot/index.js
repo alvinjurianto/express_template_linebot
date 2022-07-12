@@ -54,7 +54,12 @@ app.message(async (event, client) =>{
                     data: "Carousel"
                 }
             },
-        ]} else {
+        ]
+        var quickReply = app.createQuickReply(list);
+        message.quickReply = quickReply;
+
+        return client.replyMessage(event.replyToken, message);
+    } else {
             var message = { type: 'text', text: event.message.text + ' ですね' };
             return client.replyMessage(event.replyToken, message);
         }
