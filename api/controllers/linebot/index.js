@@ -123,7 +123,7 @@ app.postback(async (event, client) => {
       action
     );
     return client.replyMessage(event.replyToken, message);
-  } else if (event.postback.data == "LinkingCard") {
+  } else if (event.postback.data == "OpenInstaCard") {
     const action = {
         type: "uri",
         label: "URI",
