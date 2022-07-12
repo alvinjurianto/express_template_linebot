@@ -134,10 +134,11 @@ app.postback(async (event, client) => {
     // }]
     
     const action = {
-        type: "text",
-        text:"hello my friendo!",
-        // label: "Account Link",
-        // uri: "https://nnlife-jp--irisdev04.my.salesforce.com/"
+        // type: "text",
+        // text:"hello my friendo!",
+        type: "uri",
+        label: "Account Link",
+        uri: "https://nnlife-jp--irisdev04.my.salesforce.com/"
       };
 
       var message = app.createLinkingCard(
