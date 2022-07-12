@@ -12,7 +12,7 @@ const app = new LineUtils(line, config);
 
 app.message(async (event, client) =>{
     console.log(event);
-    console.log('client', client);
+    // console.log('client', client);
 
     // fetching id for creating linkToken
     const linkText = 'linkText'
@@ -57,7 +57,14 @@ app.message(async (event, client) =>{
         ]
         var quickReply = app.createQuickReply(list);
         message.quickReply = quickReply;
-
+        return client.replyMessage(event.replyToken, message);
+    } if (event.message.text == 'call Link') {
+        const action = {
+            type: "uri",
+            label: "uri uri uri uri uri",
+            uri: "https://google.com"
+        }
+        var message = app.makeAction(event.message.text, action)
         return client.replyMessage(event.replyToken, message);
     } else {
             var message = { type: 'text', text: event.message.text + ' ですね' };
