@@ -80,7 +80,7 @@ class LineUtils{
                     console.log(event.type + ' is not defined.');
             }))
             .then((result) =>{
-//                console.log(result);
+               console.log('alvin here--', result);
 //                return new Response(result);
                 return new Response({});
             })
