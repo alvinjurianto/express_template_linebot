@@ -117,7 +117,7 @@ app.postback(async (event, client) => {
         "linebot sample",
         "https://source.unsplash.com/fbCxL_wEo5M",
         "you have sucessfully started linking process",
-        `LOGIN to SALESFORCE 098`,
+        `LOGIN to SALESFORCE 100`,
         action
       );
       console.log('sending message');
