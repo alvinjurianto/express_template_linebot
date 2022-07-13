@@ -101,11 +101,12 @@ app.postback(async (event, client) => {
     const linkToken = await client.getLinkToken(event.source.userId);
     const uri = 'https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?response_type=token&client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https://mysterious-brook-43858.herokuapp.com/callback?key=' + linkToken + '&response_type=token';
     const uritest = 'https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?response_type=token&client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https:google.com&response_type=token';
+    const uritest2 = 'https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https://access.line.me/dialog/bot/accountLink?linkToken=HkcLvWy9ClDu5txQnNWmpytT8Dh6k5wk&response_type=code'
     console.log('uri result is:', uritest)
     const action = {
         type: "uri",
         label: "Account Link",
-        uri: uritest
+        uri: uritest2
       };
 
       var message = app.createLinkingCard(
@@ -113,7 +114,7 @@ app.postback(async (event, client) => {
         "linebot sample",
         "https://source.unsplash.com/fbCxL_wEo5M",
         "you have sucessfully started linking process",
-        `LOGIN to SALESFORCE`,
+        `LOGIN to SALESFORCE 2`,
         action
       );
       console.log('sending message');
