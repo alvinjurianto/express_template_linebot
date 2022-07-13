@@ -1,5 +1,4 @@
 "use strict";
-import { simpleResponseList } from "../../helpers/line_utils_data/line_utils_data"
 
 const config = {
   channelAccessToken:
@@ -19,7 +18,57 @@ app.message(async (event, client) => {
 
   if (event.message.text == "/") {
     var message = app.createSimpleResponse(event.message.text);
-    var list = simpleResponseList
+    var list = simpleResponseList = [
+        {
+          title: "SimpleResponse",
+          action: {
+            type: "postback",
+            data: "SimpleResponse",
+          },
+        },
+        {
+          title: "BasicCard",
+          action: {
+            type: "postback",
+            data: "BasicCard",
+          },
+        },
+        {
+          title: "Linking Card",
+          action: {
+            type: "postback",
+            data: "LinkingCard",
+          },
+        },
+        {
+          title: "Open Instagram Card",
+          action: {
+            type: "postback",
+            data: "OpenInstaCard",
+          },
+        },
+        {
+            title: "Open PocketIRIS Card",
+            action: {
+              type: "postback",
+              data: "OpenIRISCard",
+            },
+          },
+        {
+          title: "List",
+          action: {
+            type: "postback",
+            data: "List",
+          },
+        },
+        {
+          title: "Carousel",
+          action: {
+            type: "postback",
+            data: "Carousel",
+          },
+        },
+      ];
     var quickReply = app.createQuickReply(list);
     message.quickReply = quickReply;
     return client.replyMessage(event.replyToken, message);
