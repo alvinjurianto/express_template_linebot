@@ -1,5 +1,5 @@
 "use strict";
-
+// just adding comment 
 const config = {
   channelAccessToken:
     process.env.LINE_CHANNEL_ACCESS_TOKEN ||
@@ -18,7 +18,7 @@ app.message(async (event, client) => {
 
   if (event.message.text == "/") {
     var message = app.createSimpleResponse(event.message.text);
-    var list = simpleResponseList = [
+    var list = [
         {
           title: "SimpleResponse",
           action: {
