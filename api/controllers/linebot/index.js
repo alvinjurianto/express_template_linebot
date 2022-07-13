@@ -16,7 +16,7 @@ const app = new LineUtils(line, config);
 app.message(async (event, client) => {
   console.log(event);
 
-  if (event.message.text == "/") {
+  if (event.message.text == "/" || event.message.text == '商品を探す') {
     var message = app.createSimpleResponse("下からのメーニュ選択してください");
     var list = [
         {
