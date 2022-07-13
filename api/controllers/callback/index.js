@@ -6,9 +6,9 @@ const TextResponse = require(HELPER_BASE + 'textresponse');
 
 exports.handler = async (event, context, callback) => {
     if (event.path == '/callback') {
-        console.log('check the event here', event)
+        console.log('check the event.queryStringParameters here', event.queryStringParameters)
         // call the 
 
-        return new Response({"test": "succedded"})
+        return new Response({"test": "succedded", "passedKey": `${event.queryStringParameters}`})
     }
 }
