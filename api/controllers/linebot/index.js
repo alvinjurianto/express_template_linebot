@@ -1,5 +1,5 @@
 "use strict";
-import simpleResponseList from "../../helpers/line_utils_data/line_utils_data"
+import { simpleResponseList } from "../../helpers/line_utils_data/line_utils_data"
 
 const config = {
   channelAccessToken:
