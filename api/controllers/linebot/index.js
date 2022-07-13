@@ -17,7 +17,7 @@ app.message(async (event, client) => {
   console.log(event);
 
   if (event.message.text == "/") {
-    var message = app.createSimpleResponse(event.message.text);
+    var message = app.createSimpleResponse("下からのメーニュ選択してください");
     var list = [
         {
           title: "SimpleResponse",
@@ -184,39 +184,37 @@ app.postback(async (event, client) => {
     var message = app.createList("List", list);
     return client.replyMessage(event.replyToken, message);
   } else if (event.postback.data == "Carousel") {
+
+    const action = {
+        type: "uri",
+        label: "URI",
+        uri: "https://irisdev04-nnlife-jp.cs76.force.com/pocketirismobilepublisher",
+      };
+
     var list = [
       {
-        title: "Brown Cafe",
-        desc: "Brown Cafeです",
+        title: "商品１",
+        desc: "商品１の説明です。どのぐらいまでに長い文章ができるかどうか、の確認したいですね。",
         image_url:
-          "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip10.jpg",
+          "https://source.unsplash.com/AOgRd7Ah8-U",
         action_text: "選択",
-        action: {
-          type: "message",
-          text: "Brown Cafeを選択",
-        },
+        action: action
       },
       {
-        title: "Brow&Cony's Restaurant",
-        desc: "Brow&Cony's Restaurantです",
+        title: "商品２",
+        desc: "商品１の説明です。どのぐらいまでに長い文章ができるかどうか、の確認したいですね。",
         image_url:
-          "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip11.jpg",
+          "https://source.unsplash.com/tZw3fcjUIpM",
         action_text: "選択",
-        action: {
-          type: "message",
-          text: "Brow&Cony's Restaurantを選択",
-        },
+        action: action
       },
       {
-        title: "Tata",
+        title: "商品３",
         desc: "Tataです",
         image_url:
-          "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip12.jpg",
+          "https://source.unsplash.com/0OAmd_COUM",
         action_text: "選択",
-        action: {
-          type: "message",
-          text: "Tataが選択されました",
-        },
+        action: action
       },
     ];
     var message = app.createCarousel("Carousel", list);
@@ -226,14 +224,6 @@ app.postback(async (event, client) => {
 
 app.accountLink(async (event, client) => {
     console.log('what the hell is this event? is it accountLINK????', event);
-    // const line = require("@line/bot-sdk");
-
-    // const client = new line.Client({
-    //   channelAccessToken: config.channelAccessToken ,
-    // });
-
-    // const linkToken = await client.getLinkToken(event.source.userId);
-    // console.log('link token result?', linkToken);
     var message = { type: "text", text: 'well at least we sent this message' + " ですね" };
     return client.replyMessage(event.replyToken, message);
 })
