@@ -148,36 +148,25 @@ app.postback(async (event, client) => {
   } else if (event.postback.data == "List") {
     var list = [
       {
-        title: "Brown Cafe",
-        desc: "Brown Cafeです",
+        title: "ご希望の条件から商品を探す",
+        desc: "給付種類、解約返戻金、加入目的などの条件に合って商品を指示します",
         image_url:
-          "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip10.jpg",
+          "https://source.unsplash.com/AOgRd7Ah8-U",
         action_text: "選択",
         action: {
           type: "message",
-          text: "Brown Cafeを選択",
+          text: "ご希望の条件から",
         },
       },
       {
-        title: "Brow&Cony's Restaurant",
-        desc: "Brow&Cony's Restaurantです",
+        title: "商品の指示して試算する",
+        desc: "複数の商品を並べて簡単に比較することができます。",
         image_url:
-          "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip11.jpg",
+          "https://source.unsplash.com/tZw3fcjUIpM",
         action_text: "選択",
         action: {
           type: "message",
-          text: "Brow&Cony's Restaurantを選択",
-        },
-      },
-      {
-        title: "Tata",
-        desc: "Tataです",
-        image_url:
-          "https://scdn.line-apps.com/n/channel_devcenter/img/flexsnapshot/clip/clip12.jpg",
-        action_text: "選択",
-        action: {
-          type: "message",
-          text: "Tataが選択されました",
+          text: "昇進指示",
         },
       },
     ];
