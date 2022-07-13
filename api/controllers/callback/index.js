@@ -8,7 +8,7 @@ exports.handler = async (event, context, callback) => {
     if (event.path == '/callback') {
         console.log('check the event.queryStringParameters here', event.queryStringParameters)
         // call the 
-
-        return new Response({"test": "succedded", "passedKey": `${event.queryStringParameters}`})
+        const key = event.queryStringParameters.key
+        return new Response({"test": "succedded", "passedKey": key})
     }
 }
