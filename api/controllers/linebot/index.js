@@ -1,4 +1,5 @@
 "use strict";
+import simpleResponseList from "../../helpers/line_utils_data/line_utils_data"
 
 const config = {
   channelAccessToken:
@@ -15,77 +16,13 @@ const app = new LineUtils(line, config);
 
 app.message(async (event, client) => {
   console.log(event);
-  // console.log('client', client);
-
-  // fetching id for creating linkToken
-  const linkText = "linkText";
-
-  if (event.message.text === linkText) {
-    // call webhook here for linktext
-    // return the linkToken via message
-    console.log("entered linkText");
-  }
 
   if (event.message.text == "/") {
     var message = app.createSimpleResponse(event.message.text);
-    var list = [
-      {
-        title: "SimpleResponse",
-        action: {
-          type: "postback",
-          data: "SimpleResponse",
-        },
-      },
-      {
-        title: "BasicCard",
-        action: {
-          type: "postback",
-          data: "BasicCard",
-        },
-      },
-      {
-        title: "LinkingCard",
-        action: {
-          type: "postback",
-          data: "LinkingCard",
-        },
-      },
-      {
-        title: "OpenInstaCard",
-        action: {
-          type: "postback",
-          data: "OpenInstaCard",
-        },
-      },
-      {
-        title: "List",
-        action: {
-          type: "postback",
-          data: "List",
-        },
-      },
-      {
-        title: "Carousel",
-        action: {
-          type: "postback",
-          data: "Carousel",
-        },
-      },
-    ];
+    var list = simpleResponseList
     var quickReply = app.createQuickReply(list);
     message.quickReply = quickReply;
     return client.replyMessage(event.replyToken, message);
-  }
-  if (event.message.text == "call Link") {
-    console.log("entering call linkk!!!");
-    const action = {
-      type: "uri",
-      label: "URI",
-      uri: "https://www.google.com",
-    };
-    var message = app.makeAction(event.message.text, action);
-    console.log("message??", message);
-    return client.replyMessage(event.replyToken, action);
   } else {
     var message = { type: "text", text: event.message.text + " ですね" };
     return client.replyMessage(event.replyToken, message);
@@ -108,34 +45,12 @@ app.postback(async (event, client) => {
     );
     return client.replyMessage(event.replyToken, message);
   } else if (event.postback.data == "LinkingCard") {
-    // const linkToken = 'testtoken'
     const line = require("@line/bot-sdk");
-
     const client = new line.Client({
       channelAccessToken: config.channelAccessToken ,
     });
-
     const linkToken = await client.getLinkToken(event.source.userId);
-    console.log('link token result', linkToken)
-    // console.log('link token result?', linkToken);
-
-    // "messages"= [{
-    //     "type": "template",
-    //     "altText": "Account Link",
-    //     "template": {
-    //         "type": "buttons",
-    //         "text": "Account Link",
-    //         "actions": [{
-    //             "type": "uri",
-    //             "label": "Account Link",
-    //             "uri": "http://example.com/link?linkToken=xxx"
-    //         }]
-    //     }
-    // }]
-    
     const action = {
-        // type: "text",
-        // text:"hello my friendo!",
         type: "uri",
         label: "Account Link",
         uri: "https://nnlife-jp--irisdev04.my.salesforce.com/"
@@ -144,7 +59,7 @@ app.postback(async (event, client) => {
       var message = app.createLinkingCard(
         "Linking Card",
         "linebot sample",
-        "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+        "https://source.unsplash.com/fbCxL_wEo5M",
         "you have sucessfully started linking process",
         `LOGIN to SALESFORCE`,
         action
@@ -160,9 +75,24 @@ app.postback(async (event, client) => {
     var message = app.createLinkingCard(
       "Linking Card",
       "linebot sample",
-      "https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png",
+      "https://source.unsplash.com/_tF3vug2FhQ",
       "opening instagram desu",
       "open instagram",
+      action
+    );
+    return client.replyMessage(event.replyToken, message);
+  } else if (event.postback.data == "OpenIrisCommunity") {
+    const action = {
+      type: "uri",
+      label: "URI",
+      uri: "https://irisdev04-nnlife-jp.cs76.force.com/pocketirismobilepublisher",
+    };
+    var message = app.createLinkingCard(
+      "Linking Card",
+      "linebot sample",
+      "https://source.unsplash.com/ZzOa5G8hSPI",
+      "access pocket IRIS",
+      "open",
       action
     );
     return client.replyMessage(event.replyToken, message);
