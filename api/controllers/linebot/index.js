@@ -130,7 +130,7 @@ app.postback(async (event, client) => {
       action
     );
     return client.replyMessage(event.replyToken, message);
-  } else if (event.postback.data == "OpenIrisCommunity") {
+  } else if (event.postback.data == "OpenIRISCard") {
     const action = {
       type: "uri",
       label: "URI",
