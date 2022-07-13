@@ -1,0 +1,8 @@
+ paths: 
+  /callback:
+    get:
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/CommonResponse"
