@@ -330,6 +330,7 @@ function routing(req, res) {
         return;
       }else
       if( res.func_type == 'normal' ){
+        console.log('we are enterting normal territory');
           event = {
               headers: req.headers,
               body: JSON.stringify(req.body),
@@ -368,7 +369,7 @@ function routing(req, res) {
           req: req,
           swagger: req.swagger
       };
-
+console.log('running till here i assume?');
       const task = func(event, context, (error, response) =>{
           console.log('callback called');
           if( error )
