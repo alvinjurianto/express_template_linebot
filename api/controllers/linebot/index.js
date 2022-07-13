@@ -102,7 +102,7 @@ app.postback(async (event, client) => {
     const uri = 'https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?response_type=token&client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https://mysterious-brook-43858.herokuapp.com/callback?key=' + linkToken + '&response_type=token';
     const uritest = 'https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?response_type=token&client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https:google.com&response_type=token';
     const uritest2 = 'https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https://mysterious-brook-43858.herokuapp.com/callback?key=' + linkToken + '&response_type=token';
-    console.log('uri result is:', uritest)
+    console.log('uri result is:', uritest2)
     const action = {
         type: "uri",
         label: "Account Link",
