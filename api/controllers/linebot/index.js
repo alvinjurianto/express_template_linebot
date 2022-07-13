@@ -202,7 +202,7 @@ app.postback(async (event, client) => {
       },
       {
         title: "商品２",
-        desc: "商品１の説明です。どのぐらいまでに長い文章ができるかどうか、の確認したいですね。",
+        desc: "商品2の説明です。どのぐらいまでに長い文章ができるかどうか、の確認したいですね。",
         image_url:
           "https://source.unsplash.com/tZw3fcjUIpM",
         action_text: "選択",
@@ -210,9 +210,9 @@ app.postback(async (event, client) => {
       },
       {
         title: "商品３",
-        desc: "Tataです",
+        desc: "商品2の説明です。どのぐらいまでに長い文章ができるかどうか、の確認したいですね。",
         image_url:
-          "https://source.unsplash.com/0OAmd_COUM",
+          "https://source.unsplash.com/y0OAmd_COUM",
         action_text: "選択",
         action: action
       },
