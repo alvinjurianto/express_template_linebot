@@ -99,7 +99,7 @@ app.postback(async (event, client) => {
       channelAccessToken: config.channelAccessToken ,
     });
     const linkToken = await client.getLinkToken(event.source.userId);
-    const uri = 'https://nnlife-jp--irisdev04.my.salesforce.com/authorize?response_type=token&client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https://mysterious-brook-43858.herokuapp.com/callback?key=' + linkToken + '&response_type=token';
+    const uri = 'https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?response_type=token&client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https://mysterious-brook-43858.herokuapp.com/callback?key=' + linkToken + '&response_type=token';
     const action = {
         type: "uri",
         label: "Account Link",
