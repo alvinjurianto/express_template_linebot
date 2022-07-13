@@ -122,6 +122,7 @@ folders.forEach(folder => {
         }else{
           // x-functype: normal|alexa|lambda の場合
           postprocess = require('./' + folder)[options.handler];
+          console.log('is it this router here? 2')
           nextfunc = routing;
         }
 
