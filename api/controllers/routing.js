@@ -318,7 +318,7 @@ function routing(req, res) {
 //  console.log(req);
 
   const operationId = req.swagger.operation.operationId;
-  console.log('req.swagger', req.swagger)
+  console.log('req', req)
   console.log('[' + req.path + ' calling]');
 
   try{
