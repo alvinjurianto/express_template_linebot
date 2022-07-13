@@ -53,6 +53,7 @@ if( fs.existsSync(fname) ){
           }else{
             // x-functype: normal|alexa|lambda の場合
             postprocess = require(CONTROLLERS_BASE + options.operationId)[options.handler];
+            console.log('is it this router here?')
             nextfunc = routing;
           }
   
@@ -316,7 +317,7 @@ function routing(req, res) {
 //  console.log(req);
 
   const operationId = req.swagger.operation.operationId;
-  console.log('req.swagger.operation', req.swagger.operation)
+  console.log('req.swagger', req.swagger)
   console.log('[' + req.path + ' calling]');
 
   try{
