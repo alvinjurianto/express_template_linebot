@@ -84,10 +84,10 @@ exports.handler = async (event, context, callback) => {
     console.log('final final redirect url haha', finalRedirectURL);
     if (finalRedirectURL) {
       console.log("until here", finalRedirectURL);
-      return new Response({ sad: "truth" });
+      return new Response({ 'sad': "truth" });
       // res.redirect('307', finalRedirectURL);
     } else {
-      return new Response(showObj);
+        return new Response({ "even worse": " sad truth" });
     }
   }
 };
