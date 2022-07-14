@@ -61,11 +61,11 @@ exports.handler = async (event, context, callback) => {
     // }).post();
 
     const body = {
-      "grant_type": "authorization_code",
-      "code": code,
-      "client_id": config.sfdc_client_id,
-      "client_secret": config.sfdc_client_secret,
-      "redirect_uri":
+      grant_type: 'authorization_code',
+      code: code,
+      client_id: config.sfdc_client_id,
+      client_secret: config.sfdc_client_secret,
+      redirect_uri:
         "https://access.line.me/dialog/bot/accountLink?linkToken=" +
         state +
         "&nonce=apaya",
