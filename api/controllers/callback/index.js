@@ -1,5 +1,5 @@
 // import got from "got";
-// import fetch from "node-fetch";
+import fetch from "node-fetch";
 const THIS_BASE_PATH = process.env.THIS_BASE_PATH;
 
 const HELPER_BASE = process.env.HELPER_BASE || "../../helpers/";
@@ -13,7 +13,7 @@ const config = {
 };
 exports.handler = async (event, context, callback) => {
   if (event.path == "/callback" || event.path == "/testEndpoint" ) {
-    const fetch = require('node-fetch')
+    // const fetch = require('node-fetch')
     return new Response({"result": "success"});
 
     console.log(
