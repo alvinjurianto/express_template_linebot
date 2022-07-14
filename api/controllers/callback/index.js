@@ -85,7 +85,7 @@ exports.handler = async (event, context, callback) => {
     if (finalRedirectURL) {
       console.log("until here", finalRedirectURL);
     //   return new Response({ 'sad': "truth" });
-      event.res.redirect('307', finalRedirectURL);
+      event.res.redirect('302', finalRedirectURL);
     } else {
         return new Response({ "even worse": " sad truth" });
     }
