@@ -65,7 +65,7 @@ exports.handler = async (event, context, callback) => {
       },
       data: data,
     };
-    axios(config)
+    await axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         showObj["responseeeeeeeSUCCESSaccess_token"] =
