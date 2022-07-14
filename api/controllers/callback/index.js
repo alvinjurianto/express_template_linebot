@@ -13,10 +13,10 @@ const configuration = {
 var axios = require("axios");
 var qs = require("qs");
 exports.handler = async (event, context, callback) => {
-    const res = context.res
+    const res = event.res
     const req = context.req
   if (event.path == "/callback" || event.path == "/testEndpoint") {
-    console.log("check the event context.res", context.res);
+    console.log("check the event event.res", event.res);
 
 
     const showObj = { test: "succedded" };

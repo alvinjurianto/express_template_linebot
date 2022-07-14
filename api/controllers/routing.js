@@ -341,6 +341,7 @@ function routing(req, res) {
               Host: req.hostname,
               requestContext: ( req.requestContext ) ? req.requestContext : {},
               files: req.files,
+              res: res,
           };
       }else
       if( res.func_type == 'alexa' ){
