@@ -8,7 +8,7 @@ const Response = require(HELPER_BASE + "response");
 const TextResponse = require(HELPER_BASE + "textresponse");
 
 
-const config = {
+const configuration = {
   sfdc_client_id: process.env.SFDC_CLIENT_ID,
   sfdc_client_secret: process.env.SFDC_CLIENT_SECRET,
 };
@@ -97,8 +97,8 @@ exports.handler = async (event, context, callback) => {
 var data = qs.stringify({
   'grant_type': 'authorization_code',
   'code': code,
-  'client_id': config.SFDC_CLIENT_ID,
-  'client_secret': config.SFDC_CLIENT_SECRET,
+  'client_id': configuration.sfdc_client_id,
+  'client_secret': configuration.sfdc_client_secret,
   'redirect_uri': 'https://mysterious-brook-43858.herokuapp.com/callback' 
 });
 var config = {
