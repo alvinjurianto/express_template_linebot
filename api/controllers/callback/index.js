@@ -47,8 +47,7 @@ exports.handler = async (event, context, callback) => {
         state +
         "&nonce=" +
         access_token_input;
-        console.log('ress???', res)
-        res.redirect(307, url);
+        return url
     //   var config = {
     //     method: "get",
     //     url: url,
@@ -61,6 +60,8 @@ exports.handler = async (event, context, callback) => {
     //     //calling line is successful
     //   );
     };
+
+    var finalRedirectURL = '';
 
     var data = qs.stringify({
       grant_type: "authorization_code",
@@ -83,7 +84,8 @@ exports.handler = async (event, context, callback) => {
         showObj["responseeeeeeeSUCCESSaccess_token"] =
           response.data.access_token;
 
-        callLineLinking({ access_token_input: response.data.access_token });
+        finalRedirectURL = await callLineLinking({ access_token_input: response.data.access_token });
+  
       })
       .catch(function (error) {
         console.log(error);
@@ -91,7 +93,10 @@ exports.handler = async (event, context, callback) => {
       });
 
     //save line user ID to SFDC
-
-    return new Response(showObj);
+    if (finalRedirectURL) {
+        res.redirect('307', finalRedirectURL);
+    }else {
+        return new Response(showObj);
+    }
   }
 };
