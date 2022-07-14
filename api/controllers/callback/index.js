@@ -96,7 +96,7 @@ exports.handler = async (event, context, callback) => {
 
 const callLineLinking = async ({access_token_input}) => {
     console.log('calling line linking??');
-    const url = qs.stringify('https://access.line.me/dialog/bot/accountLink?linkToken='+state+'&nonce='+access_token_input)
+    const url = 'https://access.line.me/dialog/bot/accountLink?linkToken='+state+'&nonce='+access_token_input
     var config = {
         method: 'get',
         url: url,
