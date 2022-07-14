@@ -16,7 +16,7 @@ exports.handler = async (event, context, callback) => {
     const res = context.res
     const req = context.req
   if (event.path == "/callback" || event.path == "/testEndpoint") {
-    console.log("check the event context", context);
+    console.log("check the event context.res", context.res);
 
 
     const showObj = { test: "succedded" };
