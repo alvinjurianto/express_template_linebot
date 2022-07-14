@@ -50,7 +50,7 @@ exports.handler = async (event, context, callback) => {
         return url
     };
 
-    // var finalRedirectURL = '';
+    var finalRedirectURL = '';
 
     var data = qs.stringify({
       grant_type: "authorization_code",
