@@ -19,3 +19,9 @@ does not accept external URL scheme so have to make a https link that redirects 
 5. on salesforce oauth access policies
 for now on the sandbox I turned on allowing all user access to apps.
 When making POC we have to check / create a new access 権限 for line linking app. 
+for reference:
+https://help.salesforce.com/s/articleView?id=000334174&type=1
+
+
+6. Since node request library has entered maintenance mode, here are the list of alternative libraries for sending request
+https://github.com/request/request/issues/3143
