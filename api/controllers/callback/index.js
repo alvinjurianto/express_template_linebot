@@ -94,6 +94,19 @@ exports.handler = async (event, context, callback) => {
     //     return new Response({"error": "in fetching access token"}, e);
     // }
 
+const callLineLinking = async ({access_token_input}) => {
+    const url = qs.stringify('https://access.line.me/dialog/bot/accountLink?linkToken='+state+'&nonce='+access_token_input)
+    var config = {
+        method: 'get',
+        url: url,
+    }
+    axios(config).then( function (response) {
+        return true
+    }
+         //calling line is successful
+    )
+}
+
 var data = qs.stringify({
   'grant_type': 'authorization_code',
   'code': code,
@@ -113,11 +126,16 @@ axios(config)
 .then(function (response) {
   console.log(JSON.stringify(response.data));
   showObj['responseeeeeeeSUCCESSaccess_token'] = response.data.access_token
+
+  callLineLinking({access_token_input: response.data.access_token});
+
 })
 .catch(function (error) {
   console.log(error);
   showObj['authError'] = 'there is error';
 });
+
+//save line user ID to SFDC
 
     return new Response(showObj);
   }

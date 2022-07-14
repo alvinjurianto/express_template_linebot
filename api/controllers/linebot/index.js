@@ -11,6 +11,7 @@ const config = {
 const HELPER_BASE = process.env.HELPER_BASE || "../../helpers/";
 const LineUtils = require(HELPER_BASE + "line-utils");
 const line = require("@line/bot-sdk");
+const qs = require('qs')
 const app = new LineUtils(line, config);
 
 app.message(async (event, client) => {
@@ -104,7 +105,7 @@ app.postback(async (event, client) => {
     const uritest = 'https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?response_type=token&client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https:google.com&response_type=token';
     const uritest2 = 'https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https://mysterious-brook-43858.herokuapp.com/callback?key=' + linkToken + '&response_type=token';
     const uritest3 = 'https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=' + googlelink + '&response_type=token';
-    const uritest4 = "https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https://mysterious-brook-43858.herokuapp.com/callback&response_type=code&state=cowboyman"
+    const uritest4 = "https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/authorize?client_id=3MVG9N6eDmZRVJOmaMFWd.OUMf2NnUyAJdZSqvmDHnjk9X2EnA3gN3gjHeTa_prpJFss6Kd9G9Bbhtsu2YcKC&redirect_uri=https://mysterious-brook-43858.herokuapp.com/callback&response_type=code&state=" + linkToken
     const action = {
         type: "uri",
         label: "Account Link",
@@ -116,8 +117,8 @@ app.postback(async (event, client) => {
         "linebot sample",
         "https://source.unsplash.com/fbCxL_wEo5M",
         "you have sucessfully started linking process",
-        `LOGIN to SALESFORCE 100`,
-        action
+        `LOGIN to SALESFORCE A`,
+        qs.stringify(uritest4)
       );
       console.log('sending message');
     return client.replyMessage(event.replyToken, message);
@@ -218,7 +219,7 @@ app.postback(async (event, client) => {
 });
 
 app.accountLink(async (event, client) => {
-    console.log('what the hell is this event? is it accountLINK????', event);
+    console.log('FINALLY LINKING EVENT IS CALLEDDDDD', event);
     var message = { type: "text", text: 'well at least we sent this message' + " ですね" };
     return client.replyMessage(event.replyToken, message);
 })
