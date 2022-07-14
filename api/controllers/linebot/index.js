@@ -6,6 +6,8 @@ const config = {
     "【LINEチャネルアクセストークン(長期)】",
   channelSecret:
     process.env.LINE_CHANNEL_SECRET || "【LINEチャネルシークレット】",
+    sfdc_client_id: process.env.SFDC_CLIENT_ID,
+    sfdc_client_secret: process.env.SFDC_CLIENT_SECRET,
 };
 
 const HELPER_BASE = process.env.HELPER_BASE || "../../helpers/";
