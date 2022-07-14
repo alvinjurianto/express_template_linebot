@@ -40,7 +40,7 @@ exports.handler = async (event, context, callback) => {
       showObj["linkToken"] = state;
     }
 
-    const callLineLinking = async ({ access_token_input }) => {
+    const callLineLinking = ({ access_token_input }) => {
       console.log("calling line linking??");
       const url =
         "https://access.line.me/dialog/bot/accountLink?linkToken=" +
@@ -48,20 +48,9 @@ exports.handler = async (event, context, callback) => {
         "&nonce=" +
         access_token_input;
         return url
-    //   var config = {
-    //     method: "get",
-    //     url: url,
-    //   };
-    //   axios(config).then(
-    //     function (response) {
-    //       console.log("line linking success", response, "??");
-
-    //     }
-    //     //calling line is successful
-    //   );
     };
 
-    var finalRedirectURL = '';
+    // var finalRedirectURL = '';
 
     var data = qs.stringify({
       grant_type: "authorization_code",
@@ -82,9 +71,8 @@ exports.handler = async (event, context, callback) => {
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         showObj["responseeeeeeeSUCCESSaccess_token"] =
-          response.data.access_token;
-
-        finalRedirectURL = await callLineLinking({ access_token_input: response.data.access_token });
+        response.data.access_token;
+        finalRedirectURL = callLineLinking({ access_token_input: response.data.access_token });
   
       })
       .catch(function (error) {
