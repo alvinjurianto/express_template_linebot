@@ -232,11 +232,11 @@ app.accountLink(async (event, client) => {
 
      // Authorization: Bearer access_token use access token in header
 
-     var data = {
-        client_id: config.sfdc_client_id,
-        client_secret: config.sfdc_client_secret,
-        redirect_uri: "https://mysterious-brook-43858.herokuapp.com/callback",
-      };
+    //  var data = {
+    //     client_id: config.sfdc_client_id,
+    //     client_secret: config.sfdc_client_secret,
+    //     redirect_uri: "https://mysterious-brook-43858.herokuapp.com/callback",
+    //   };
 
     var config = {
         method: "get",
