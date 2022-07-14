@@ -12,6 +12,8 @@ const config = {
 };
 exports.handler = async (event, context, callback) => {
   if (event.path == "/callback") {
+    return new Response({"result": "success"});
+
     console.log(
       "check the event.queryStringParameters here",
       event.queryStringParameters
@@ -87,6 +89,6 @@ exports.handler = async (event, context, callback) => {
     //     return new Response({"error": "in fetching access token"});
     // }
 
-    return new Response(showObj);
+    // return new Response(showObj);
   }
 };
