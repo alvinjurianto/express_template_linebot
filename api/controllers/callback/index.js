@@ -61,7 +61,7 @@ exports.handler = async (event, context, callback) => {
     // }).post();
 
     const body = {
-      "grant-type": "authorization_code",
+      "grant_type": "authorization_code",
       "code": code,
       "client_id": config.sfdc_client_id,
       "client_secret": config.sfdc_client_secret,
@@ -79,7 +79,7 @@ exports.handler = async (event, context, callback) => {
           headers: {
             // "Host": "https://nnlife-jp--irisdev04.my.salesforce.com",
             // "Host": "https://test.salesforce.com",
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Content-Type": "application/json",
             "Content-length": "307",
           },
         }
