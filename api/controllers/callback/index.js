@@ -15,7 +15,7 @@ var qs = require("qs");
 exports.handler = async (event, context, callback) => {
     const res = event.res
   if (event.path == "/callback" || event.path == "/testEndpoint") {
-    console.log("check the event event.res", event.res);
+    console.log("check the event event.res", event.httpMethod);
     console.log("consted res", res)
 
 
