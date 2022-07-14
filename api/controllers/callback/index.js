@@ -95,12 +95,14 @@ exports.handler = async (event, context, callback) => {
     // }
 
 const callLineLinking = async ({access_token_input}) => {
+    console.log('calling line linking??');
     const url = qs.stringify('https://access.line.me/dialog/bot/accountLink?linkToken='+state+'&nonce='+access_token_input)
     var config = {
         method: 'get',
         url: url,
     }
     axios(config).then( function (response) {
+        console.log('line linking success');
         return true
     }
          //calling line is successful
