@@ -102,7 +102,7 @@ const callLineLinking = async ({access_token_input}) => {
         url: url,
     }
     axios(config).then( function (response) {
-        console.log('line linking success');
+        console.log('line linking success', response, '??');
         return true
     }
          //calling line is successful
