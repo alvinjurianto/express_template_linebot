@@ -8,6 +8,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const fs = require('fs');
+const fetch = require('node-fetch')
 const { graphqlHTTP } = require('express-graphql');
 const cors = require('cors');
 require('dotenv').config();
