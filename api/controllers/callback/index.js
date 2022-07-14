@@ -88,7 +88,7 @@ exports.handler = async (event, context, callback) => {
       console.log("response result of id", response.id);
     } catch (e) {
         console.log('error in fetching access token', e)
-        return new Response({"error": "in fetching access token"});
+        return new Response({"error": "in fetching access token"}, e);
     }
 
     return new Response(showObj);
