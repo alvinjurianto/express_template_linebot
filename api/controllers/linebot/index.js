@@ -109,7 +109,7 @@ app.postback(async (event, client) => {
     const action = {
         type: "uri",
         label: "Account Link",
-        uri: uritest4
+        uri: qs.stringify(uritest4)
       };
 
       var message = app.createLinkingCard(
@@ -118,7 +118,7 @@ app.postback(async (event, client) => {
         "https://source.unsplash.com/fbCxL_wEo5M",
         "you have sucessfully started linking process",
         `LOGIN to SALESFORCE A`,
-        qs.stringify(uritest4)
+        action
       );
       console.log('sending message');
     return client.replyMessage(event.replyToken, message);
