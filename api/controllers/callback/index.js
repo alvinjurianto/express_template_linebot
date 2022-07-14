@@ -13,10 +13,10 @@ const configuration = {
 var axios = require("axios");
 var qs = require("qs");
 exports.handler = async (event, context, callback) => {
-    const res = event.res
+    // const res = event.res
   if (event.path == "/callback" || event.path == "/testEndpoint") {
     // console.log("check the event event.res", event.httpMethod);
-    console.log("consted res", res)
+    // console.log("consted res", res)
 
 
     const showObj = { test: "succedded" };
@@ -95,7 +95,7 @@ exports.handler = async (event, context, callback) => {
     //save line user ID to SFDC
     if (finalRedirectURL) {
         console.log('until here', finalRedirectURL);
-        res.redirect('307', finalRedirectURL);
+        // res.redirect('307', finalRedirectURL);
     }else {
         return new Response(showObj);
     }
