@@ -73,7 +73,7 @@ exports.handler = async (event, context, callback) => {
         showObj["responseeeeeeeSUCCESSaccess_token"] =
         response.data.access_token;
         finalRedirectURL = callLineLinking({ access_token_input: response.data.access_token });
-  
+        console.log('finalRedirectURL', finalRedirectURL)
       })
       .catch(function (error) {
         console.log(error);
