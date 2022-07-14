@@ -109,7 +109,7 @@ app.postback(async (event, client) => {
     const action = {
         type: "uri",
         label: "Account Link",
-        uri: qs.stringify(uritest4)
+        uri: uritest4
       };
 
       var message = app.createLinkingCard(
