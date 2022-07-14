@@ -13,12 +13,11 @@ const configuration = {
 var axios = require("axios");
 var qs = require("qs");
 exports.handler = async (event, context, callback) => {
-    // const res = event.res
+  // const res = event.res
   if (event.path == "/callback" || event.path == "/testEndpoint") {
     // console.log("check the event event.res", event.httpMethod);
     // console.log("consted res", res)
-
-
+    console.log('newkey', event.newkey);
     const showObj = { test: "succedded" };
     const key = event.queryStringParameters.key;
     if (key) {
@@ -47,10 +46,10 @@ exports.handler = async (event, context, callback) => {
         state +
         "&nonce=" +
         access_token_input;
-        return url
+      return url;
     };
 
-    var finalRedirectURL = '';
+    var finalRedirectURL = "";
 
     var data = qs.stringify({
       grant_type: "authorization_code",
@@ -71,9 +70,11 @@ exports.handler = async (event, context, callback) => {
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         showObj["responseeeeeeeSUCCESSaccess_token"] =
-        response.data.access_token;
-        finalRedirectURL = callLineLinking({ access_token_input: response.data.access_token });
-        console.log('finalRedirectURL', finalRedirectURL)
+          response.data.access_token;
+        finalRedirectURL = callLineLinking({
+          access_token_input: response.data.access_token,
+        });
+        console.log("finalRedirectURL", finalRedirectURL);
       })
       .catch(function (error) {
         console.log(error);
@@ -82,11 +83,11 @@ exports.handler = async (event, context, callback) => {
 
     //save line user ID to SFDC
     if (finalRedirectURL) {
-        console.log('until here', finalRedirectURL);
-        return new Response({"sad": "truth"})
-        // res.redirect('307', finalRedirectURL);
-    }else {
-        return new Response(showObj);
+      console.log("until here", finalRedirectURL);
+      return new Response({ sad: "truth" });
+      // res.redirect('307', finalRedirectURL);
+    } else {
+      return new Response(showObj);
     }
   }
 };

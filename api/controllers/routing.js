@@ -342,6 +342,7 @@ function routing(req, res) {
               requestContext: ( req.requestContext ) ? req.requestContext : {},
               files: req.files,
               res: res,
+              newkey: "alvin putting in newkey"
           };
       }else
       if( res.func_type == 'alexa' ){
