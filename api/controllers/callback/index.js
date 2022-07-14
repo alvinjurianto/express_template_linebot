@@ -70,6 +70,7 @@ exports.handler = async (event, context, callback) => {
         state +
         "&nonce=apaya",
     };
+    console.log('strinfy and encodedurl', encodeURI(JSON.stringify(body)))
     try {
       const response = await fetch(
         "https://test.salesforce.com/services/oauth2/token",
