@@ -15,3 +15,7 @@ https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for
 4. UI modules to be confirmed
 -[] accessing external app from card
 does not accept external URL scheme so have to make a https link that redirects there I assume
+
+5. on salesforce oauth access policies
+for now on the sandbox I turned on allowing all user access to apps.
+When making POC we have to check / create a new access 権限 for line linking app. 
