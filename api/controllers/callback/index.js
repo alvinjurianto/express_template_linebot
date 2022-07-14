@@ -49,6 +49,7 @@ exports.handler = async (event, context, callback) => {
         state +
         "&nonce=" +
         access_token_input;
+        console.log('ress???', res)
         res.redirect(307, url);
     //   var config = {
     //     method: "get",
