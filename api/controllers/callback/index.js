@@ -94,6 +94,7 @@ exports.handler = async (event, context, callback) => {
 
     //save line user ID to SFDC
     if (finalRedirectURL) {
+        console.log('until here', finalRedirectURL);
         res.redirect('307', finalRedirectURL);
     }else {
         return new Response(showObj);
