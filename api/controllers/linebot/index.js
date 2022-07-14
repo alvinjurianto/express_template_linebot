@@ -231,10 +231,8 @@ app.accountLink(async (event, client) => {
      // Authorization: Bearer access_token use access token in header
 
      var data = {
-        grant_type: "authorization_code",
-        code: code,
-        client_id: configuration.sfdc_client_id,
-        client_secret: configuration.sfdc_client_secret,
+        client_id: config.sfdc_client_id,
+        client_secret: config.sfdc_client_secret,
         redirect_uri: "https://mysterious-brook-43858.herokuapp.com/callback",
       };
 
@@ -245,7 +243,7 @@ app.accountLink(async (event, client) => {
         "Authorization": "Bearer "+access_token,
         "Content-Type": "application/json",
         },
-        data: JSON.stringify(data),
+        // data: JSON.stringify(data),
     };
     await axios(config).then(function (response) {
         console.log('SFDC query response', response);
