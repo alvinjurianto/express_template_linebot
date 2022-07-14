@@ -75,11 +75,11 @@ exports.handler = async (event, context, callback) => {
         "https://test.salesforce.com/services/oauth2/token",
         {
           method: "post",
-          body: JSON.stringify(body),
+          body: encodeURI(JSON.stringify(body)),
           headers: {
             // "Host": "https://nnlife-jp--irisdev04.my.salesforce.com",
             // "Host": "https://test.salesforce.com",
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
             "Content-length": "307",
           },
         }
