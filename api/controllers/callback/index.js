@@ -10,10 +10,11 @@ const configuration = {
   sfdc_client_id: process.env.SFDC_CLIENT_ID,
   sfdc_client_secret: process.env.SFDC_CLIENT_SECRET,
 };
-const fetch = require("node-fetch");
 var axios = require("axios");
 var qs = require("qs");
 exports.handler = async (event, context, callback) => {
+    const res = context.res
+    const req = context.req
   if (event.path == "/callback" || event.path == "/testEndpoint") {
     console.log("check the event here", event);
     console.log("check the event context", context);
@@ -48,17 +49,18 @@ exports.handler = async (event, context, callback) => {
         state +
         "&nonce=" +
         access_token_input;
-      var config = {
-        method: "get",
-        url: url,
-      };
-      axios(config).then(
-        function (response) {
-          console.log("line linking success", response, "??");
-          return true;
-        }
-        //calling line is successful
-      );
+        res.redirect(307, url);
+    //   var config = {
+    //     method: "get",
+    //     url: url,
+    //   };
+    //   axios(config).then(
+    //     function (response) {
+    //       console.log("line linking success", response, "??");
+
+    //     }
+    //     //calling line is successful
+    //   );
     };
 
     var data = qs.stringify({
