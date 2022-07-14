@@ -226,7 +226,7 @@ app.accountLink(async (event, client) => {
     const access_token = event.link.nonce
     // call sfdc soap / 
     var message = { type: "text", text: 'data is saved, now you are linked' + " ですね" };
-    var message = { type: "text", text: 'failed at saving data please try again' + " ですね" };
+    var errmessage = { type: "text", text: 'failed at saving data please try again' + " ですね" };
 
     // 下のコードはtrailhead のRest APIから
 
@@ -252,7 +252,7 @@ app.accountLink(async (event, client) => {
         return client.replyMessage(event.replyToken, message);
     }).catch(function (error) {
         console.log('SFDC query response error', error);
-        return client.replyMessage(event.replyToken, message);
+        return client.replyMessage(event.replyToken, errmessage);
     })
 })
 
