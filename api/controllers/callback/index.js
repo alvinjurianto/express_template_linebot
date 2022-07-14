@@ -11,7 +11,7 @@ const config = {
   sfdc_client_secret: process.env.SFDC_CLIENT_SECRET,
 };
 exports.handler = async (event, context, callback) => {
-  if (event.path == "/callback") {
+  if (event.path == "/callback" || event.path == "/testEndpoint" ) {
     return new Response({"result": "success"});
 
     console.log(
