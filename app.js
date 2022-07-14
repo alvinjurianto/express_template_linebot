@@ -55,7 +55,7 @@ require(process.env.THIS_BASE_PATH + '/api/controllers/routing_mqtt');
 require(process.env.THIS_BASE_PATH + '/api/controllers/routing_cron');
 
 app.all('*', function(req, res) {
-//  console.log(req);
+  console.log('REQ HERE', req);
   console.log('Unknown Endpoint');
   console.log('\tmethod=' + req.method);
   console.log('\tendpoint=' + req.params[0]);
