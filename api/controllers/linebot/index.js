@@ -251,6 +251,7 @@ app.accountLink(async (event, client) => {
         console.log('SFDC query response', response);
         return client.replyMessage(event.replyToken, message);
     }).catch(function (error) {
+        console.log('SFDC query response error', error);
         return client.replyMessage(event.replyToken, message);
     })
 })
