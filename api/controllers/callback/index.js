@@ -16,7 +16,6 @@ exports.handler = async (event, context, callback) => {
       "check the event.queryStringParameters here",
       event.queryStringParameters
     );
-    // call the
 
     const showObj = { test: "succedded" };
     const key = event.queryStringParameters.key;
@@ -57,36 +56,36 @@ exports.handler = async (event, context, callback) => {
     //   },
     // }).post();
 
-    const body = {
-      "grant-type": "authorization_code",
-      code: code,
-      client_id: config.sfdc_client_id,
-      client_secret: config.sfdc_client_secret,
-      redirect_uri:
-        "https://access.line.me/dialog/bot/accountLink?linkToken=" +
-        state +
-        "&nonce=apaya",
-    };
-    try {
-      const response = await fetch(
-        "https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/token",
-        {
-          method: "post",
-          body: JSON.stringify(body),
-          headers: {
-            Host: "https://nnlife-jp--irisdev04.my.salesforce.com",
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Content-length": "307",
-          },
-        }
-      );
-      console.log(response);
-      console.log("response result of access_token", response.access_token);
-      console.log("response result of id", response.id);
-    } catch (e) {
-        console.log('error in fetching access token', e)
-        return new Response({"error": "in fetching access token"});
-    }
+    // const body = {
+    //   "grant-type": "authorization_code",
+    //   code: code,
+    //   client_id: config.sfdc_client_id,
+    //   client_secret: config.sfdc_client_secret,
+    //   redirect_uri:
+    //     "https://access.line.me/dialog/bot/accountLink?linkToken=" +
+    //     state +
+    //     "&nonce=apaya",
+    // };
+    // try {
+    //   const response = await fetch(
+    //     "https://nnlife-jp--irisdev04.my.salesforce.com/services/oauth2/token",
+    //     {
+    //       method: "post",
+    //       body: JSON.stringify(body),
+    //       headers: {
+    //         Host: "https://nnlife-jp--irisdev04.my.salesforce.com",
+    //         "Content-Type": "application/x-www-form-urlencoded",
+    //         "Content-length": "307",
+    //       },
+    //     }
+    //   );
+    //   console.log(response);
+    //   console.log("response result of access_token", response.access_token);
+    //   console.log("response result of id", response.id);
+    // } catch (e) {
+    //     console.log('error in fetching access token', e)
+    //     return new Response({"error": "in fetching access token"});
+    // }
 
     return new Response(showObj);
   }
