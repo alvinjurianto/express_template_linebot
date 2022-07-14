@@ -11,6 +11,7 @@ const config = {
 const HELPER_BASE = process.env.HELPER_BASE || "../../helpers/";
 const LineUtils = require(HELPER_BASE + "line-utils");
 const line = require("@line/bot-sdk");
+const { default: axios } = require("axios");
 const qs = require('qs')
 const app = new LineUtils(line, config);
 
@@ -220,8 +221,38 @@ app.postback(async (event, client) => {
 
 app.accountLink(async (event, client) => {
     console.log('FINALLY LINKING EVENT IS CALLEDDDDD', event);
-    var message = { type: "text", text: 'well at least we sent this message' + " ですね" };
-    return client.replyMessage(event.replyToken, message);
+    const access_token = event.link.nonce
+    // call sfdc soap / 
+    var message = { type: "text", text: 'data is saved, now you are linked' + " ですね" };
+    var message = { type: "text", text: 'failed at saving data please try again' + " ですね" };
+
+    // 下のコードはtrailhead のRest APIから
+
+     // Authorization: Bearer access_token use access token in header
+
+     var data = {
+        grant_type: "authorization_code",
+        code: code,
+        client_id: configuration.sfdc_client_id,
+        client_secret: configuration.sfdc_client_secret,
+        redirect_uri: "https://mysterious-brook-43858.herokuapp.com/callback",
+      };
+
+    var config = {
+        method: "get",
+        url: "https://irisdev04-nnlife.cs76.force.com/services/data/v50.0/sobjects/User",
+        headers: {
+        "Authorization": "Bearer "+access_token,
+        "Content-Type": "application/json",
+        },
+        data: JSON.stringify(data),
+    };
+    await axios(config).then(function (response) {
+        console.log('SFDC query response', response);
+        return client.replyMessage(event.replyToken, message);
+    }).catch(function (error) {
+        return client.replyMessage(event.replyToken, message);
+    })
 })
 
 exports.fulfillment = app.lambda();
